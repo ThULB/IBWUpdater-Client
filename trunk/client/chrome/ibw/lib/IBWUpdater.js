@@ -133,6 +133,9 @@ var IBWUpdaterHelper = {
     }
 }
 
+/**
+ * The IBWUpdater main class.
+ */
 function IBWUpdater() {
 	this.wrappedJSObject = this
 	
@@ -1132,6 +1135,18 @@ function IBWUpdaterPackage() {
 
 // === IBWUpdaterPackageExtractor ===
 
+/**
+ * IBWUpdaterPackageExtractor used to extract ZIP files to WinIBW binary dir.
+ * 
+ * @param {nsIFile}
+ *            aPackageFile - the zipped package file
+ * @param {nsIFile}
+ *            aPackageTargetDir - the target dir of package
+ * @param {Object}
+ *            aProgressFuncClass - the class witch holds the progress callback
+ * @param {Object}
+ *            aProgressFunc - the progress callback
+ */
 function IBWUpdaterPackageExtractor(aPackageFile, aPackageTargetDir, aProgressFuncClass, aProgressFunc) {
 	var packageFile = aPackageFile;
 	var targetDir = aPackageTargetDir;
@@ -1584,6 +1599,13 @@ IBWUpdaterPrefParser.encodeValue = function(aValue) {
 
 // === IBWUpdaterJSParser ===
 
+/**
+ * IBWUpdaterJSParser is a simple JavaScript parser and formater with the
+ * ability to overwrite functions with custom comments and code.
+ * 
+ * @param {nsIFile}
+ *            aJSFile - the JavaScript file
+ */
 function IBWUpdaterJSParser(aJSFile) {
 	const lineSeparator = "\n";
 	
@@ -1841,8 +1863,6 @@ function IBWUpdaterJSParser(aJSFile) {
 
 /**
  * Represents the IBWUpdaterException Object.
- * 
- * @class IBWUpdaterException
  * 
  * @param {Object}
  *            the Exception Object
