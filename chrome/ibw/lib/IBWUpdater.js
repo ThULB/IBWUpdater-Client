@@ -1662,6 +1662,7 @@ function IBWUpdaterJSParser(aJSFile) {
 	var jsFunctions = new Array();
 	var jsUnknown = "";
 
+	// load JavaScript file on init
 	loadFile();
 
 	/**
