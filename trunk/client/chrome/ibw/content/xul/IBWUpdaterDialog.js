@@ -26,7 +26,7 @@ function onLoad() {
 		//updater = window.arguments[0].wrappedJSObject;
 		updater = new IBWUpdater();
 	} catch (ex) {
-		application.messageBox("IBWUpdater", ex.toString(), "error-icon");
+		application.messageBox("IBWUpdater", ex, "error-icon");
 	}
 }
 
@@ -46,7 +46,7 @@ function onFocus() {
 			startProcessing();
 		}
 	} catch (ex) {
-		application.messageBox("IBWUpdater", ex.toString(), "error-icon");
+		application.messageBox("IBWUpdater", ex, "error-icon");
 	}
 }
 
@@ -63,6 +63,6 @@ function startProcessing() {
 			document.getElementById("lbProgressTotal").label = progress.total + "%";
 		});
 	} catch (ex) {
-		application.messageBox("IBWUpdater", ex.toString(), "error-icon");
+		application.messageBox("IBWUpdater", ex, "error-icon");
 	}
 }
