@@ -53,6 +53,9 @@ var I18N = {
 };
 
 var IBWUpdaterHelper = {
+	/**
+	 * Converts an given Sting to UTF-8.
+	 */
     toUnicode : function(str) {
 	    try {
 		    var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
@@ -64,6 +67,16 @@ var IBWUpdaterHelper = {
 	    }
     },
 
+    /**
+	 * Reads an XML from URL or File.
+	 * 
+	 * @param {nsIFile|String}
+	 *            aFile - the nsIFile or URL string
+	 * @param {String}
+	 *            aEncoding - the encoding of XML
+	 * @param {Boolean}
+	 *            aBypassCache - if cache should be bypassed
+	 */
     readXML : function(aFile, aEncoding, aBypassCache) {
 	    try {
 		    var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
@@ -87,6 +100,15 @@ var IBWUpdaterHelper = {
 	    }
     },
 
+    /**
+	 * Reads an local file.
+	 * 
+	 * @param {nsIFile}
+	 *            aFile - the file to read
+	 * @param {String}
+	 *            aLineSeparator - the line separator that should be used to
+	 *            joins lines.
+	 */
     readFile : function(aFile, aLineSeparator) {
 	    try {
 		    var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
@@ -107,6 +129,16 @@ var IBWUpdaterHelper = {
 	    }
     },
 
+    /**
+	 * Writes an local file.
+	 * 
+	 * @param {nsIFile}
+	 *            aFile - the file to write
+	 * @param {String}
+	 *            aData - the data to write
+	 * @param {Integer}
+	 *            aFileMode - the file mode for file
+	 */
     writeFile : function(aFile, aData, aFileMode) {
 	    try {
 		    var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
@@ -121,6 +153,14 @@ var IBWUpdaterHelper = {
 	    return true;
     },
 
+    /**
+	 * Get the directory for given property.
+	 * 
+	 * @param {String}
+	 *            aPropName - the property name
+	 * @param {Object}
+	 *            aInterface - the nsIFile interface
+	 */
     getSpecialDir : function(aPropName, aInterface) {
 	    try {
 		    var file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get(aPropName,
@@ -1877,37 +1917,27 @@ function IBWUpdaterException(aException) {
 	
 	/**
 	 * The Exception message.
-	 * 
-	 * @property {read write String} ?
 	 */
 	this.message = exception.message != null ? exception.message :
 				(typeof(exception) == "string" ? exception : "");
 	
 	/**
 	 * The file name within exception occured.
-	 * 
-	 * @property {read write String} ?
 	 */
 	this.fileName = exception.fileName == null ? "" : exception.fileName;
 	
 	/**
 	 * The line number on there exception occured.
-	 * 
-	 * @property {read write String} ?
 	 */
 	this.lineNumber = exception.lineNumber == null ? "" : exception.lineNumber;
 	
 	/**
 	 * The stack trace of exception.
-	 * 
-	 * @property {read write String} ?
 	 */
 	this.stack = exception.stack == null ? "" : exception.stack;
 	
 	/**
 	 * The name of exception.
-	 * 
-	 * @property {read write String} ?
 	 */
 	this.name = exception.name == null ? "" : exception.name;
 }
