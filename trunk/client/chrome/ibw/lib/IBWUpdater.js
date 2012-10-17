@@ -324,6 +324,11 @@ function IBWUpdater() {
 
 // === IBWUpdaterPackages ===
 
+/**
+ * IBWUpdaterPackages compare packages from remote server with installed once.
+ * If an package not found on local installed the would downloaded, extract and
+ * installed.
+ */
 function IBWUpdaterPackages() {
 	var that = this;
 	
