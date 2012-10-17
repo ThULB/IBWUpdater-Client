@@ -1,0 +1,7 @@
+<!-- Entities for Preferences Dialog -->
+<!ENTITY  pref.title        "IBW Updater">
+
+<!-- Entities for Updater Dialog -->
+<!ENTITY  dlg.title         "IBW Updater">
+<!ENTITY  dlg.init          "Initialisiere...">
+<!ENTITY  dlg.total         "Gesamt">
