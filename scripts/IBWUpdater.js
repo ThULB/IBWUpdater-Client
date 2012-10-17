@@ -33,5 +33,5 @@ try {
 		updater.start();
 	}
 } catch (e) {
-	application.messageBox("IBWUpdater", e.toString(), "error-icon");
+	application.messageBox("IBWUpdater", e, "error-icon");
 }

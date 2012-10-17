@@ -1847,13 +1847,16 @@ function IBWUpdaterJSParser(aJSFile) {
  * @param {Object}
  *            the Exception Object
  */
-function IBWUpdaterException(exception) {
+function IBWUpdaterException(aException) {
+	var exception = aException;
+	
 	/**
 	 * The Exception message.
 	 * 
 	 * @property {read write String} ?
 	 */
-	this.message = exception.message == null ? "" : exception.message;
+	this.message = exception.message != null ? exception.message :
+				(typeof(exception) == "string" ? exception : "");
 	
 	/**
 	 * The file name within exception occured.
@@ -1882,13 +1885,19 @@ function IBWUpdaterException(exception) {
 	 * @property {read write String} ?
 	 */
 	this.name = exception.name == null ? "" : exception.name;
-	
-	/**
-	 * The formated message of Exception.
-	 * 
-	 * @return {String} the exception message
-	 */
-	this.toString = function() {
-		return this.name + " " + this.fileName + ":" + this.lineNumber + " " + this.message + "\r\n" + this.stack;
-	}
+}
+
+/**
+ * Form a string of relevant information.
+ * 
+ * When providing this method, WinIBW show the returned string instead of
+ * [object Object] for uncaught exceptions.
+ * 
+ * @return {String} information about the exception
+ */
+IBWUpdaterException.prototype.toString = function() {
+	return (this.name != null ? (this.name + " ") : "") + 
+		(this.fileName != null ? this.fileName + ":" : "") + 
+		(this.lineNumber != null ? this.lineNumber + " " : "") + this.message + 
+		(this.stack != null ? "\r\n" + this.stack : "");
 }
