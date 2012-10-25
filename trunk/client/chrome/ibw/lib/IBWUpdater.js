@@ -225,7 +225,7 @@ function IBWUpdater() {
 			throw new IBWUpdaterException(message);
 		}
 
-		var url_query = updaterURL + "packages.xml?uid=" + localUID;
+		var url_query = updaterURL + "packages.php?uid=" + localUID;
 
 		try {
 			parsePackages(IBWUpdaterHelper.readXML(url_query, "UTF-8", true));
@@ -240,7 +240,7 @@ function IBWUpdater() {
 	function parsePackages(doc) {
 		if (doc != null) {
 			var pkgs = doc.getElementsByTagName("package");
-			for ( var c = 0; c < pkgs.length; c++) {
+			for (var c = 0; c < pkgs.length; c++) {
 				var pkg = new IBWUpdaterPackage();
 
 				pkg.setID(pkgs.item(c).getAttribute("id"));
@@ -964,7 +964,6 @@ function IBWUpdaterPackage() {
 	 * @param aId
 	 */
 	this.setID = function(aId) {
-		// TODO http://www.php.net/manual/de/function.uniqid.php#104166
 		id = aId == null ? "" : aId;
 	}
 
