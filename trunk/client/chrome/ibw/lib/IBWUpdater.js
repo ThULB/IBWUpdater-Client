@@ -643,7 +643,7 @@ function IBWUpdaterPackages() {
 			// cleanup
 			packageFile.remove(false);
 
-			setStartupScript(curPackage.getStartupScript());
+			setStartupScript("resource:/" + curPackage.getStartupScript());
 		} else if (curPackage.getType() == "user") {
 			progress.step = I18N.getLocalizedMessage("packages.step.InstallScript");
 
@@ -749,7 +749,6 @@ function IBWUpdaterPackages() {
 
 				packageFile.append(urlParts[urlParts.length - 1]);
 				packageFile.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0666);
-
 				
 				downloadPackage();
 			} else {
