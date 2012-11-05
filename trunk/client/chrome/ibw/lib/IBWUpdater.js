@@ -53,7 +53,7 @@ var I18N = {
 };
 
 var IBWUpdaterHelper = {
-	/**
+    /**
 	 * Converts an given Sting to UTF-8.
 	 */
     toUnicode : function(str) {
@@ -81,7 +81,7 @@ var IBWUpdaterHelper = {
 	    try {
 		    var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 		    var channel = null;
-		    
+
 		    if (typeof (aFile) == "string") {
 			    channel = ioService.newChannel(aFile, aEncoding != undefined ? aEncoding : "UTF-8", null);
 			    if (aBypassCache == true)
@@ -171,16 +171,16 @@ var IBWUpdaterHelper = {
 		    return null;
 	    }
     }
-}
+};
 
 /**
  * The IBWUpdater main class.
  */
 function IBWUpdater() {
-	this.wrappedJSObject = this
-	
+	this.wrappedJSObject = this;
+
 	var that = this;
-	
+
 	var updaterURL = "";
 	var lastChecked = null;
 	var updaterDialog = null;
@@ -191,7 +191,7 @@ function IBWUpdater() {
 
 	// Initialize IBWUpdater
 	init();
-	
+
 	/**
 	 * Init IBWUpdater and check if packages available.
 	 */
@@ -240,7 +240,7 @@ function IBWUpdater() {
 	function parsePackages(doc) {
 		if (doc != null) {
 			var pkgs = doc.getElementsByTagName("package");
-			for (var c = 0; c < pkgs.length; c++) {
+			for ( var c = 0; c < pkgs.length; c++) {
 				var pkg = new IBWUpdaterPackage();
 
 				pkg.setID(pkgs.item(c).getAttribute("id"));
@@ -321,7 +321,7 @@ function IBWUpdater() {
 	this.getUpdateSrvUrl = function() {
 		return updaterURL;
 	};
-	
+
 	/**
 	 * Returns <code>true</code> if updates available.
 	 * 
@@ -329,7 +329,7 @@ function IBWUpdater() {
 	 */
 	this.hasUpdates = function() {
 		return (packages instanceof IBWUpdaterPackages) && (packages.count() != 0);
-	}
+	};
 
 	/**
 	 * Returns <code>true</code> if currently on processing.
@@ -338,14 +338,14 @@ function IBWUpdater() {
 	 */
 	this.isProcessing = function() {
 		return packages.isProcessing();
-	}
+	};
 
 	/**
 	 * Used to start Dialog and begin updates.
 	 */
 	this.start = function() {
 		openUpdaterDialog();
-	}
+	};
 
 	/**
 	 * Starts package download and installation process.
@@ -359,7 +359,7 @@ function IBWUpdater() {
 		} catch (ex) {
 			throw new IBWUpdaterException(ex);
 		}
-	}
+	};
 }
 
 // === IBWUpdaterPackages ===
@@ -371,7 +371,7 @@ function IBWUpdater() {
  */
 function IBWUpdaterPackages() {
 	var that = this;
-	
+
 	// callbacks
 	var progressCallback = null;
 
@@ -386,7 +386,7 @@ function IBWUpdaterPackages() {
 	    step : "",
 	    single : 0,
 	    total : 0
-	}
+	};
 
 	// package data
 	var pID = -1;
@@ -398,7 +398,7 @@ function IBWUpdaterPackages() {
 
 	// init local packages
 	loadInstalled();
-	
+
 	/**
 	 * Adds an package to local installed.
 	 * 
@@ -410,7 +410,7 @@ function IBWUpdaterPackages() {
 			localPackages.push(aPackage);
 		}
 	}
-	
+
 	/**
 	 * Load installed packages.
 	 */
@@ -427,7 +427,7 @@ function IBWUpdaterPackages() {
 					var pkgs = doc.getElementsByTagName("package");
 					for ( var c = 0; c < pkgs.length; c++) {
 						var pkg = new IBWUpdaterPackage();
-						
+
 						pkg.setID(pkgs.item(c).getAttribute("id"));
 						pkg.setType(pkgs.item(c).getAttribute("type"));
 						pkg.setVersion(pkgs.item(c).getAttribute("version"));
@@ -435,7 +435,7 @@ function IBWUpdaterPackages() {
 						if (pkgs.item(c).getElementsByTagName("fileList").length != 0) {
 							var fileList = new Array();
 							for ( var i = 0; i < pkgs.item(c).getElementsByTagName("file").length; i++) {
-								fileList.push(pkgs.item(c).getElementsByTagName("file").item(i).textContent)
+								fileList.push(pkgs.item(c).getElementsByTagName("file").item(i).textContent);
 							}
 							pkg.setFileList(fileList);
 						}
@@ -490,8 +490,8 @@ function IBWUpdaterPackages() {
 			} else if (pkg.getType() == "user") {
 				var funcs = pkg.getFunction();
 				if (funcs.length != 0) {
-					for (var i in funcs) {
-						xml += "\t\t<function name=\"" + funcs[i].name + "\"" + (funcs[i].params != null ? " params=\"" + funcs[i].params + "\"" : "" ) + "/>\n";
+					for ( var i in funcs) {
+						xml += "\t\t<function name=\"" + funcs[i].name + "\"" + (funcs[i].params != null ? " params=\"" + funcs[i].params + "\"" : "") + "/>\n";
 					}
 				}
 			}
@@ -554,7 +554,7 @@ function IBWUpdaterPackages() {
 			localPackages[counter] = aPackage;
 		}
 	}
-	
+
 	/**
 	 * Download the package from package URL.
 	 */
@@ -578,9 +578,9 @@ function IBWUpdaterPackages() {
 				}
 
 				var listener = new that.StreamListener(that, packageFile, function(aClazz, succes) {
-					aClazz.onDownloadDone(succes)
+					aClazz.onDownloadDone(succes);
 				}, function(aClazz, aProgress, aProgressMax) {
-					aClazz.onPackageProgress(aProgress, aProgressMax)
+					aClazz.onPackageProgress(aProgress, aProgressMax);
 				});
 
 				mChannel.notificationCallbacks = listener;
@@ -590,7 +590,7 @@ function IBWUpdaterPackages() {
 			}
 		}
 	}
-	
+
 	/**
 	 * Set the startup script file.
 	 * 
@@ -628,7 +628,7 @@ function IBWUpdaterPackages() {
 
 		return false;
 	}
-	
+
 	/**
 	 * Installs the package.
 	 */
@@ -667,7 +667,7 @@ function IBWUpdaterPackages() {
 				userScriptFile = IBWUpdaterHelper.getSpecialDir("ProfD");
 				userScriptFile.append("winibw.js");
 			}
-			
+
 			var jsParser = new IBWUpdaterJSParser(userScriptFile);
 
 			var func = curPackage.getFunction();
@@ -679,8 +679,13 @@ function IBWUpdaterPackages() {
 					comment += " * @description " + curPackage.getDescription() + "\n";
 				comment += " * @version " + curPackage.getVersion() + "\n";
 				comment += " */\n";
-					
-				jsParser.setFunction({name: func[c].name, params: func[c].params, code: func[c].code, comment: comment})
+
+				jsParser.setFunction({
+				    name : func[c].name,
+				    params : func[c].params,
+				    code : func[c].code,
+				    comment : comment
+				});
 
 				that.onPackageProgress(c + 1, func.length);
 			}
@@ -714,7 +719,7 @@ function IBWUpdaterPackages() {
 			packages[pID].setFileList(extractor.getFileList());
 		}
 	}
-	
+
 	/**
 	 * Process the next package.
 	 */
@@ -742,14 +747,14 @@ function IBWUpdaterPackages() {
 			if (curPackage.getType() == "common") {
 				progress.step = I18N.getLocalizedMessage("packages.step.Download");
 				progressCallback(progress);
-				
+
 				packageFile = IBWUpdaterHelper.getSpecialDir("TmpD", Components.interfaces.nsIFile);
 
 				var urlParts = curPackage.getUrl().split("/");
 
 				packageFile.append(urlParts[urlParts.length - 1]);
 				packageFile.createUnique(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0666);
-				
+
 				downloadPackage();
 			} else {
 				installPackage();
@@ -758,7 +763,7 @@ function IBWUpdaterPackages() {
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the count of packages.
 	 * 
@@ -766,8 +771,7 @@ function IBWUpdaterPackages() {
 	 */
 	this.count = function() {
 		return packages.length;
-	}
-
+	};
 
 	/**
 	 * Returns <code>true</code> if download/installation process on running.
@@ -776,9 +780,7 @@ function IBWUpdaterPackages() {
 	 */
 	this.isProcessing = function() {
 		return processing;
-	}
-
-
+	};
 
 	/**
 	 * Adds an new package.
@@ -790,7 +792,7 @@ function IBWUpdaterPackages() {
 		if (!isInstalled(aPackage)) {
 			packages.push(aPackage);
 		}
-	}
+	};
 
 	/**
 	 * Starts processing.
@@ -808,8 +810,8 @@ function IBWUpdaterPackages() {
 			if (!pProcessing)
 				return;
 		}
-	}
-	
+	};
+
 	/**
 	 * Is called if download was done.
 	 * 
@@ -822,7 +824,7 @@ function IBWUpdaterPackages() {
 		}
 
 		nextPackage();
-	}
+	};
 
 	/**
 	 * The Callback function for progress updates.
@@ -837,7 +839,7 @@ function IBWUpdaterPackages() {
 			progress.single = Math.round((aProgress / aProgressMax) * 100);
 			progressCallback(progress);
 		}
-	}
+	};
 }
 
 /**
@@ -935,7 +937,7 @@ IBWUpdaterPackages.prototype.StreamListener = function(aClazz, aFile, aCompleteF
 		    throw Components.results.NS_NOINTERFACE;
 	    }
 	});
-}
+};
 
 // === IBWUpdaterPackage ===
 
@@ -956,7 +958,7 @@ function IBWUpdaterPackage() {
 
 	// installed files - for remove operation
 	var fileList = new Array();
-	
+
 	/**
 	 * Set package id.
 	 * 
@@ -964,7 +966,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.setID = function(aId) {
 		id = aId == null ? "" : aId;
-	}
+	};
 
 	/**
 	 * Get package id.
@@ -973,7 +975,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.getID = function() {
 		return id;
-	}
+	};
 
 	/**
 	 * Set package type.
@@ -982,7 +984,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.setType = function(aType) {
 		type = aType == null ? "common" : aType;
-	}
+	};
 
 	/**
 	 * Get package type.
@@ -991,7 +993,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.getType = function() {
 		return type;
-	}
+	};
 
 	/**
 	 * Set package version.
@@ -1000,7 +1002,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.setVersion = function(aVersion) {
 		version = aVersion == null ? 0 : aVersion;
-	}
+	};
 
 	/**
 	 * Get package version.
@@ -1009,7 +1011,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.getVersion = function() {
 		return version;
-	}
+	};
 
 	/**
 	 * Set package name.
@@ -1018,7 +1020,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.setName = function(aName) {
 		name = aName == null ? "" : aName;
-	}
+	};
 
 	/**
 	 * Get package name.
@@ -1027,7 +1029,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.getName = function() {
 		return name;
-	}
+	};
 
 	/**
 	 * Set package description.
@@ -1036,7 +1038,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.setDescription = function(aDescription) {
 		description = aDescription == null ? "" : aDescription;
-	}
+	};
 
 	/**
 	 * Get package description.
@@ -1045,7 +1047,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.getDescription = function() {
 		return description;
-	}
+	};
 
 	/**
 	 * Set package download url.
@@ -1054,7 +1056,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.setUrl = function(aUrl) {
 		url = aUrl == null ? "" : aUrl;
-	}
+	};
 
 	/**
 	 * Get Package download url.
@@ -1063,7 +1065,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.getUrl = function() {
 		return url;
-	}
+	};
 
 	/**
 	 * Set package startup script.
@@ -1073,7 +1075,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.setStartupScript = function(aStartupScript) {
 		startupScript = aStartupScript == null ? "" : aStartupScript;
-	}
+	};
 
 	/**
 	 * Get Package startup script.
@@ -1082,7 +1084,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.getStartupScript = function() {
 		return startupScript;
-	}
+	};
 
 	/**
 	 * Set package file list.
@@ -1092,7 +1094,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.setFileList = function(aFileList) {
 		fileList = aFileList == null ? new Array() : aFileList;
-	}
+	};
 
 	/**
 	 * Get Package file list.
@@ -1101,7 +1103,7 @@ function IBWUpdaterPackage() {
 	 */
 	this.getFileList = function() {
 		return fileList;
-	}
+	};
 
 	/**
 	 * Set or add a function.
@@ -1123,10 +1125,10 @@ function IBWUpdaterPackage() {
 
 		func.push({
 		    name : aName,
-		    params: aParams,
+		    params : aParams,
 		    code : aCode
 		});
-	}
+	};
 
 	/**
 	 * Returns the function object for given name or an array of functions. <br>
@@ -1150,7 +1152,7 @@ function IBWUpdaterPackage() {
 		}
 
 		return null;
-	}
+	};
 
 	/**
 	 * Compare two packages with each other and returns <code>-1</code> if
@@ -1173,7 +1175,7 @@ function IBWUpdaterPackage() {
 			return 0;
 		} else
 			return -1;
-	}
+	};
 }
 
 // === IBWUpdaterPackageExtractor ===
@@ -1300,7 +1302,7 @@ function IBWUpdaterPackageExtractor(aPackageFile, aPackageTargetDir, aProgressFu
 
 		return dir;
 	}
-	
+
 	/**
 	 * Extract the given package.
 	 */
@@ -1332,12 +1334,12 @@ function IBWUpdaterPackageExtractor(aPackageFile, aPackageTargetDir, aProgressFu
 			}
 
 			counter++;
-			progressFunc(progressClass, counter, packageEntries)
+			progressFunc(progressClass, counter, packageEntries);
 		}
 
 		packageReader.close();
-	}
-	
+	};
+
 	/**
 	 * Return an list of files witch was extracted.
 	 * 
@@ -1361,7 +1363,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 	var prefs = new Array();
 
 	loadPreferences();
-	
+
 	/**
 	 * Load the preferences from file.
 	 */
@@ -1402,7 +1404,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 			else
 				value = "\"" + prefs[c].value + "\"";
 
-			var prefLine = "pref(\"" + prefs[c].key + "\", " + value + ");\r\n"
+			var prefLine = "pref(\"" + prefs[c].key + "\", " + value + ");\r\n";
 			foStream.write(prefLine, prefLine.length);
 		}
 		foStream.close();
@@ -1444,20 +1446,20 @@ function IBWUpdaterPrefParser(aPrefFile) {
 
 		return result;
 	}
-	
+
 	/**
 	 * Load the preferences from file.
 	 */
 	this.loadPreferences = function() {
 		loadPreferences;
-	}
-	
+	};
+
 	/**
 	 * Save preferences to file.
 	 */
 	this.savePreferences = function() {
 		savePreferences();
-	}
+	};
 
 	/**
 	 * Returns a list of children for given branch.
@@ -1488,7 +1490,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 		}
 
 		return childs;
-	}
+	};
 
 	/**
 	 * Returns an single preference from given name.
@@ -1505,7 +1507,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 		}
 
 		return null;
-	}
+	};
 
 	/**
 	 * Set preference value for given name.
@@ -1529,7 +1531,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 		    value : IBWUpdaterPrefParser.encodeValue(aPrefValue),
 		    type : typeof (aPrefValue)
 		});
-	}
+	};
 
 	/**
 	 * Returns an string preference value for given name.
@@ -1546,7 +1548,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 		}
 
 		return null;
-	}
+	};
 
 	/**
 	 * Set an string preference value for given name.
@@ -1561,7 +1563,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 			throw new IBWUpdaterException("The given preference value \"" + aPrefValue + "\" isn't of type char.");
 
 		this.setPref(aPrefName, aPrefValue);
-	}
+	};
 
 	/**
 	 * Returns an integer preference value for given name.
@@ -1577,8 +1579,8 @@ function IBWUpdaterPrefParser(aPrefFile) {
 			return pref.value;
 		}
 
-		return null;
-	}
+		return 0;
+	};
 
 	/**
 	 * Set an integer preference value for given name.
@@ -1593,7 +1595,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 			throw new IBWUpdaterException("The given preference value \"" + aPrefValue + "\" isn't of type int.");
 
 		this.setPref(aPrefName, aPrefValue);
-	}
+	};
 
 	/**
 	 * Returns an boolean preference value for given name.
@@ -1609,8 +1611,8 @@ function IBWUpdaterPrefParser(aPrefFile) {
 			return pref.value;
 		}
 
-		return null;
-	}
+		return false;
+	};
 
 	/**
 	 * Set an boolean preference value for given name.
@@ -1625,7 +1627,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 			throw new IBWUpdaterException("The given preference value \"" + aPrefValue + "\" isn't of type boolean.");
 
 		this.setPref(aPrefName, aPrefValue);
-	}
+	};
 }
 
 /**
@@ -1638,7 +1640,7 @@ IBWUpdaterPrefParser.encodeValue = function(aValue) {
 	}
 
 	return aValue;
-}
+};
 
 // === IBWUpdaterJSParser ===
 
@@ -1650,8 +1652,9 @@ IBWUpdaterPrefParser.encodeValue = function(aValue) {
  *            aJSFile - the JavaScript file
  */
 function IBWUpdaterJSParser(aJSFile) {
-	const lineSeparator = "\n";
-	
+	const
+	lineSeparator = "\n";
+
 	var that = this;
 
 	var jsFile = aJSFile;
@@ -1668,56 +1671,56 @@ function IBWUpdaterJSParser(aJSFile) {
 	 */
 	function loadFile() {
 		if (jsFile.exists()) {
-    		var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-    		istream.init(jsFile, 0x01, 0444, 0);
-    		istream.QueryInterface(Components.interfaces.nsILineInputStream);
-    
-    		var line = {}, hasmore;
-    		do {
-    			hasmore = istream.readLine(line);
-    			if (line.value.indexOf("} function") != -1) {
-    				var lines = line.value.replace(/\} function/g, "}\nfunction").split("\n");
-    				for (var c in lines)
-    					jsLines.push(lines[c]);
-    			} else {
-    				jsLines.push(line.value);
-    			}
-    		} while (hasmore);
-    
-    		istream.close();
-    
-    		parseFile();
+			var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+			istream.init(jsFile, 0x01, 0444, 0);
+			istream.QueryInterface(Components.interfaces.nsILineInputStream);
+
+			var line = {}, hasmore;
+			do {
+				hasmore = istream.readLine(line);
+				if (line.value.indexOf("} function") != -1) {
+					var lines = line.value.replace(/\} function/g, "}\nfunction").split("\n");
+					for ( var c in lines)
+						jsLines.push(lines[c]);
+				} else {
+					jsLines.push(line.value);
+				}
+			} while (hasmore);
+
+			istream.close();
+
+			parseFile();
 		}
 	}
-	
+
 	/**
 	 * Save JavaScript file.
 	 */
 	function writeFile() {
 		var data = formatFile();
-		
-		var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-	    foStream.init(jsFile, 0x2A, 00666, 0);
 
-	    foStream.write(data, data.length);
-	    foStream.close();
+		var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+		foStream.init(jsFile, 0x2A, 00666, 0);
+
+		foStream.write(data, data.length);
+		foStream.close();
 	}
 
 	function trim(str) {
 		return str.replace(/^\s+/, '').replace(/\s+$/, '');
 	}
-	
+
 	function trimCode(aCode) {
 		var code = null;
-		
+
 		if (aCode.indexOf("{") != -1) {
-			code = aCode.substr(aCode.indexOf("{") + 1)
+			code = aCode.substr(aCode.indexOf("{") + 1);
 			code = code.substr(0, code.lastIndexOf("}"));
 		}
-		
+
 		return code;
 	}
-	
+
 	function startsWith(str, needle, withTrim) {
 		if (withTrim == null || withTrim == true)
 			return trim(str).substr(0, needle.length) == needle;
@@ -1749,74 +1752,79 @@ function IBWUpdaterJSParser(aJSFile) {
 				c++;
 				line = jsLines[c] + lineSeparator;
 			}
-			
+
 			if (startsWith(line, "//")) {
 				if (comment == null)
 					comment = line;
 				else
 					comment += line;
 			}
-			
+
 			// read function(s)
 			if (startsWith(line, "function")) {
 				var found = line.match(/function\s([^\(].*)\((.*)\)/);
 				if (found) {
 					var brackets = 0;
 					var code = null;
-				
+
 					while (line.indexOf("{") == -1) {
 						c++;
 						line = jsLines[c] + lineSeparator;
-					}	
-					
+					}
+
 					do {
 						if (line.indexOf("{") != -1)
 							brackets++;
 						if (line.indexOf("}") != -1)
 							brackets--;
-						
+
 						if (code == null)
 							code = line;
 						else
 							code += line;
-						
+
 						if ((brackets != 0)) {
 							c++;
 							line = jsLines[c] + lineSeparator;
 						}
 					} while (brackets != 0);
-					
-					jsFunctions.push({name: found[1], params: found[2], code: trimCode(code), comment: comment});
+
+					jsFunctions.push({
+					    name : found[1],
+					    params : found[2],
+					    code : trimCode(code),
+					    comment : comment
+					});
 				}
 			} else {
 				line = trim(line);
 				if (line.length != 0) {
-    				if (jsUnknown == null)
-    					jsUnknown = line + lineSeparator;
-    				else
-    					jsUnknown += line + lineSeparator;
+					if (jsUnknown == null)
+						jsUnknown = line + lineSeparator;
+					else
+						jsUnknown += line + lineSeparator;
 				}
 			}
-			
+
 			// next line
 			c++;
 		}
 	}
-	
+
 	/**
 	 * Format the JavaScript
 	 */
 	function formatFile() {
 		var data = "";
-		
+
 		jsFunctions.sort(sortFunctions);
-		
-		for (var c in jsFunctions) {
+
+		for ( var c in jsFunctions) {
 			var func = jsFunctions[c];
-			
+
 			if (func.comment) {
 				var cLines = func.comment.split("\n");
-				for (var i in cLines) {
+				for ( var i in cLines) {
 					var line = trim(cLines[i]);
 					if (line.length != 0) {
 						if (startsWith(line, "*"))
@@ -1826,10 +1834,10 @@ function IBWUpdaterJSParser(aJSFile) {
 					}
 				}
 			}
-			
+
 			data += "function " + func.name + "(" + (func.params == null ? "" : func.params) + ") {" + lineSeparator;
 			var cLines = func.code.split("\n");
-			for (var i in cLines) {
+			for ( var i in cLines) {
 				var line = trim(cLines[i]);
 				if (line.length != 0) {
 					data += "\t" + line + lineSeparator;
@@ -1837,20 +1845,20 @@ function IBWUpdaterJSParser(aJSFile) {
 			}
 			data += "}" + lineSeparator + lineSeparator;
 		}
-		
+
 		if (jsUnknown) {
 			var cLines = jsUnknown.split("\n");
-			for (var i in cLines) {
+			for ( var i in cLines) {
 				var line = trim(cLines[i]);
 				if (line.length != 0) {
 					data += line + lineSeparator;
 				}
 			}
 		}
-		
+
 		return data;
 	}
-	
+
 	function sortFunctions(a, b) {
 		if (a.name < b.name)
 			return -1;
@@ -1859,7 +1867,7 @@ function IBWUpdaterJSParser(aJSFile) {
 		if (a.name > b.name)
 			return 1;
 	}
-	
+
 	/**
 	 * Returns the function for given name.
 	 * 
@@ -1868,14 +1876,14 @@ function IBWUpdaterJSParser(aJSFile) {
 	 * @return {Object} the function object
 	 */
 	this.getFunction = function(aName) {
-		for (var c in jsFunctions) {
+		for ( var c in jsFunctions) {
 			if (jsFunctions[c].name == aName)
 				return jsFunctions[c];
 		}
-		
+
 		return null;
-	}
-	
+	};
+
 	/**
 	 * Set the given function.
 	 * 
@@ -1884,23 +1892,23 @@ function IBWUpdaterJSParser(aJSFile) {
 	 */
 	this.setFunction = function(aFunc) {
 		if (aFunc != null) {
-			for (var c in jsFunctions) {
+			for ( var c in jsFunctions) {
 				if (jsFunctions[c].name == aFunc.name) {
 					jsFunctions[c] = aFunc;
 					return;
 				}
 			}
-			
+
 			jsFunctions.push(aFunc);
 		}
-	}
-	
+	};
+
 	/**
 	 * Save JavaScript file.
 	 */
 	this.save = function() {
 		writeFile();
-	}
+	};
 }
 
 // === IBWUpdaterException ===
@@ -1913,28 +1921,27 @@ function IBWUpdaterJSParser(aJSFile) {
  */
 function IBWUpdaterException(aException) {
 	var exception = aException;
-	
+
 	/**
 	 * The Exception message.
 	 */
-	this.message = exception.message != null ? exception.message :
-				(typeof(exception) == "string" ? exception : "");
-	
+	this.message = exception.message != null ? exception.message : (typeof (exception) == "string" ? exception : "");
+
 	/**
 	 * The file name within exception occured.
 	 */
 	this.fileName = exception.fileName == null ? "" : exception.fileName;
-	
+
 	/**
 	 * The line number on there exception occured.
 	 */
 	this.lineNumber = exception.lineNumber == null ? "" : exception.lineNumber;
-	
+
 	/**
 	 * The stack trace of exception.
 	 */
 	this.stack = exception.stack == null ? "" : exception.stack;
-	
+
 	/**
 	 * The name of exception.
 	 */
@@ -1950,8 +1957,6 @@ function IBWUpdaterException(aException) {
  * @return {String} information about the exception
  */
 IBWUpdaterException.prototype.toString = function() {
-	return (this.name != null ? (this.name + " ") : "") + 
-		(this.fileName != null ? this.fileName + ":" : "") + 
-		(this.lineNumber != null ? this.lineNumber + " " : "") + this.message + 
-		(this.stack != null ? "\r\n" + this.stack : "");
+	return (this.name != null ? (this.name + " ") : "") + (this.fileName != null ? this.fileName + ":" : "")
+	        + (this.lineNumber != null ? this.lineNumber + " " : "") + this.message + (this.stack != null ? "\r\n" + this.stack : "");
 }
