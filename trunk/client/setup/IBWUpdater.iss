@@ -22,6 +22,7 @@ ShowLanguageDialog=no
 AppendDefaultDirName=false
 MergeDuplicateFiles=false
 AllowCancelDuringInstall=false
+PrivilegesRequired=lowest
 [Dirs]
 Name: {app}\scripts; Flags: uninsneveruninstall
 Name: {app}\chrome; Flags: uninsneveruninstall
