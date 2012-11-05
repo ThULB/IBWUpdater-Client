@@ -32,6 +32,9 @@ function onLoad() {
 
 function onClose() {
 	try {
+		if (!updater.isProcessing()) {
+			application.messageBox("IBWUpdater", I18N.getLocalizedMessage("packages.step.Restart"), "alert-icon");
+		}
 		return !updater.isProcessing();
 	} catch (ex) {
 		return true;
