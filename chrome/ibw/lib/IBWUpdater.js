@@ -203,6 +203,10 @@ function IBWUpdater() {
 		if (profDir != null) {
 			var parts = profDir.path.split("\\");
 			localUID = parts[parts.length - 1].toLowerCase();
+		} else {
+			profDir = IBWUpdaterHelper.getSpecialDir("DeskV", Components.interfaces.nsIFile);
+			var parts = profDir.path.split("\\");
+			localUID = parts[parts.length - 2].toLowerCase();
 		}
 
 		checkUpdates();
@@ -1959,4 +1963,4 @@ function IBWUpdaterException(aException) {
 IBWUpdaterException.prototype.toString = function() {
 	return (this.name != null ? (this.name + " ") : "") + (this.fileName != null ? this.fileName + ":" : "")
 	        + (this.lineNumber != null ? this.lineNumber + " " : "") + this.message + (this.stack != null ? "\r\n" + this.stack : "");
-}
+};
