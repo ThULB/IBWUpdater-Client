@@ -1369,6 +1369,18 @@ function IBWUpdaterPackageExtractor(aPackageFile, aPackageTargetDir, aProgressFu
 			var fileName = parts[parts.length - 1];
 			if (fileName != "") {
 				var targetFile = getExtractFile(parts);
+
+				// workaround for broken file content
+				// TODO find a better way
+				try {
+					var delFile = targetFile;
+					if (delFile.exists()) {
+						delFile.remove(false);
+					}
+				} catch (ex) {
+					// ignore
+				}
+
 				packageReader.extract(entry.name, targetFile);
 				fileList.push(entry.name);
 			} else {
