@@ -419,6 +419,8 @@ function IBWUpdaterPackages() {
 	 * Load installed packages.
 	 */
 	function loadInstalled() {
+		localPackages = new Array();
+
 		var localPackagesFile = IBWUpdaterHelper.getSpecialDir("BinDir", Components.interfaces.nsILocalFile);
 		localPackagesFile.appendRelativePath("chrome\\installed-packages.xml");
 
@@ -426,8 +428,6 @@ function IBWUpdaterPackages() {
 			try {
 				var doc = IBWUpdaterHelper.readXML(localPackagesFile);
 				if (doc != null) {
-					localPackages = new Array();
-
 					var pkgs = doc.getElementsByTagName("package");
 					for ( var c = 0; c < pkgs.length; c++) {
 						var pkg = new IBWUpdaterPackage();
@@ -445,6 +445,29 @@ function IBWUpdaterPackages() {
 						}
 						if (pkgs.item(c).getElementsByTagName("startupScript").length != 0)
 							pkg.setStartupScript(pkgs.item(c).getElementsByTagName("startupScript").item(0).textContent);
+
+						addToInstalled(pkg);
+					}
+				}
+			} catch (ex) {
+				throw new IBWUpdaterException(ex);
+			}
+		}
+
+		var userPackagesFile = IBWUpdaterHelper.getSpecialDir("ProfD", Components.interfaces.nsILocalFile);
+		userPackagesFile.appendRelativePath("installed-packages.xml");
+
+		if (userPackagesFile.exists()) {
+			try {
+				var doc = IBWUpdaterHelper.readXML(userPackagesFile);
+				if (doc != null) {
+					var pkgs = doc.getElementsByTagName("package");
+					for ( var c = 0; c < pkgs.length; c++) {
+						var pkg = new IBWUpdaterPackage();
+
+						pkg.setID(pkgs.item(c).getAttribute("id"));
+						pkg.setType(pkgs.item(c).getAttribute("type"));
+						pkg.setVersion(pkgs.item(c).getAttribute("version"));
 
 						// type user
 						if (pkgs.item(c).getElementsByTagName("function").length != 0) {
@@ -467,53 +490,69 @@ function IBWUpdaterPackages() {
 	 * Save installed packages
 	 */
 	function saveInstalled() {
-		var xml = null;
+		var comPackages = "";
+		var usrPackages = "";
 
 		for ( var c in localPackages) {
 			var pkg = localPackages[c];
 
-			if (xml == null) {
-				xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-				xml += "<packages>\n";
-			}
-
-			xml += "\t<package id=\"" + pkg.getID() + "\" type=\"" + pkg.getType() + "\" version=\"" + pkg.getVersion() + "\">\n";
-
 			if (pkg.getType() == "common") {
+				comPackages += "\t<package id=\"" + pkg.getID() + "\" type=\"" + pkg.getType() + "\" version=\"" + pkg.getVersion() + "\">\n";
 				var fileList = pkg.getFileList();
 				if (fileList.length != 0) {
-					xml += "\t\t<fileList>\n";
+					comPackages += "\t\t<fileList>\n";
 					for ( var i in fileList) {
-						xml += "\t\t\t<file>" + fileList[i] + "</file>\n";
+						comPackages += "\t\t\t<file>" + fileList[i] + "</file>\n";
 					}
-					xml += "\t\t</fileList>\n";
+					comPackages += "\t\t</fileList>\n";
 				}
 				if (pkg.getStartupScript() != null) {
-					xml += "\t\t<startupScript>" + pkg.getStartupScript() + "</startupScript>\n";
+					comPackages += "\t\t<startupScript>" + pkg.getStartupScript() + "</startupScript>\n";
 				}
+				comPackages += "\t</package>\n";
 			} else if (pkg.getType() == "user") {
+				usrPackages += "\t<package id=\"" + pkg.getID() + "\" type=\"" + pkg.getType() + "\" version=\"" + pkg.getVersion() + "\">\n";
 				var funcs = pkg.getFunction();
 				if (funcs.length != 0) {
 					for ( var i in funcs) {
-						xml += "\t\t<function name=\"" + funcs[i].name + "\"" + (funcs[i].params != null ? " params=\"" + funcs[i].params + "\"" : "") + "/>\n";
+						usrPackages += "\t\t<function name=\"" + funcs[i].name + "\"" + (funcs[i].params != null ? " params=\"" + funcs[i].params + "\"" : "")
+						        + "/>\n";
 					}
 				}
+				usrPackages += "\t</package>\n";
 			}
-
-			xml += "\t</package>\n";
 		}
 
-		if (xml == null) {
-			xml = "<?xml version=\"1.0\"?>\n";
-			xml += "<packages />";
-		} else
-			xml += "</packages>";
+		if (comPackages.length == 0) {
+			comPackages = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+			comPackages += "<packages />";
+		} else {
+			comPackages = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<packages>\n" + comPackages + "</packages>";
+		}
+
+		if (usrPackages.length == 0) {
+			usrPackages = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+			usrPackages += "<packages />";
+		} else {
+			usrPackages = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<packages>\n" + usrPackages + "</packages>";
+		}
 
 		try {
 			var localPackagesFile = IBWUpdaterHelper.getSpecialDir("BinDir", Components.interfaces.nsILocalFile);
 			localPackagesFile.appendRelativePath("chrome\\installed-packages.xml");
 
-			if (!IBWUpdaterHelper.writeFile(localPackagesFile, xml)) {
+			if (!IBWUpdaterHelper.writeFile(localPackagesFile, comPackages)) {
+				throw new IBWUpdaterException(I18N.getLocalizedMessage("packages.error.writeCommonInstalled"));
+			}
+		} catch (ex) {
+			throw new IBWUpdaterException(ex);
+		}
+
+		try {
+			var userPackagesFile = IBWUpdaterHelper.getSpecialDir("ProfD", Components.interfaces.nsILocalFile);
+			userPackagesFile.appendRelativePath("installed-packages.xml");
+
+			if (!IBWUpdaterHelper.writeFile(userPackagesFile, usrPackages)) {
 				throw new IBWUpdaterException(I18N.getLocalizedMessage("packages.error.writeCommonInstalled"));
 			}
 		} catch (ex) {
@@ -655,7 +694,6 @@ function IBWUpdaterPackages() {
 
 			var userScriptPath = prefs.getCharPref(".location.loadandSave");
 			var userScriptFile = null;
-			var userScriptData = null;
 
 			if (userScriptPath != null) {
 				try {
@@ -1351,7 +1389,7 @@ function IBWUpdaterPackageExtractor(aPackageFile, aPackageTargetDir, aProgressFu
 	 */
 	this.getFileList = function() {
 		return fileList;
-	}
+	};
 }
 
 // === IBWUpdaterPrefParser ===
@@ -1376,7 +1414,7 @@ function IBWUpdaterPrefParser(aPrefFile) {
 		istream.init(prefFile, 0x01, 0444, 0);
 		istream.QueryInterface(Components.interfaces.nsILineInputStream);
 
-		var line = {}, lines = [], hasmore;
+		var line = {}, hasmore;
 		do {
 			hasmore = istream.readLine(line);
 			var oPref = parsePref(line.value);
@@ -1656,10 +1694,7 @@ IBWUpdaterPrefParser.encodeValue = function(aValue) {
  *            aJSFile - the JavaScript file
  */
 function IBWUpdaterJSParser(aJSFile) {
-	const
-	lineSeparator = "\n";
-
-	var that = this;
+	var lineSeparator = "\n";
 
 	var jsFile = aJSFile;
 	var jsLines = new Array();
