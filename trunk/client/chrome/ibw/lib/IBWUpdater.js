@@ -1868,7 +1868,10 @@ function IBWUpdaterJSParser(aJSFile) {
 	function formatFile() {
 		var data = "";
 
-		jsFunctions.sort(sortFunctions);
+		// disable sort of functions. WinIBW Bug shortcuts set for position not
+		// name
+		// TODO fix WinIBW Bug
+		// jsFunctions.sort(sortFunctions);
 
 		for ( var c in jsFunctions) {
 			var func = jsFunctions[c];
