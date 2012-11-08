@@ -49,7 +49,9 @@
             </vbox>
             <vbox id="processingDone" flex="1" hidden="true">
                 <description id="descSummary" style="width: 390px" />
-                <label id="lbDetailsLink" value="&dlg.details;" style="color: blue; cursor: pointer; font-weight: bold;" onclick="openSummary();" />
+                <hbox>
+                    <label id="lbDetailsLink" value="&dlg.details;" style="color: blue; cursor: pointer; font-weight: bold;" onclick="openSummary();" />
+                </hbox>
             </vbox>
         </groupbox>
         <groupbox>
