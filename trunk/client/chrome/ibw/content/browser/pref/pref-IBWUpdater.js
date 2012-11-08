@@ -9,7 +9,7 @@ var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(C
 var iMode = Components.interfaces.nsISupportsString;
 
 function Startup() {
-	idWindow = "pref-IBWUpdater";
+	idWindow = "pref-IBWUpdater";	
 	try {
 		gPrefWindow = window.parent.hPrefWindow;
 	} catch (e) {
@@ -18,7 +18,28 @@ function Startup() {
 	gPrefWindow.registerOKCallbackFunc(onOK);
 	getUpdateSourceLocation();
 
+	showInstalled();
+	
 	return true;
+}
+
+function showInstalled() {
+	var updater = new IBWUpdater();
+	var packages = updater.getInstalledPackages();
+	
+	var tList = document.getElementById('tPackages');
+	var tChilds = tList.getElementsByTagName("treechildren").item(0);
+	
+	for ( var c = 0; c < packages.length; c++) {
+		var pkg = packages[c];
+		
+		var pkgData = new Array(pkg.getName(), pkg.getDescription(), I18N.getLocalizedMessage("summary.type." + pkg.getType()), pkg.getVersion());
+		tChilds.appendChild(addTreeRow(pkgData, "pkg_" + c));
+	}
+}
+
+function startForcedInstall() {
+	window.openDialog("chrome://ibw/content/xul/IBWUpdaterDialog.xul", "", "chrome,dialog=yes,centerscreen", {forceInstall: true});
 }
 
 function onOK() {
@@ -92,4 +113,27 @@ function getUpdateSourceLocation() {
 
 function setUpdateSourceLocation(value) {
 	gPrefWindow.pref.SetUnicharPref("IBWUpdater.url", value);
+}
+
+function addTreeRow(items, id) {
+	var treeitem = document.createElement('treeitem');
+	treeitem.setAttribute('id', id);
+
+	var treerow = document.createElement('treerow');
+	
+	if (typeof items == "string") {
+		var cell = document.createElement('treecell');
+		cell.setAttribute('label', items);
+		treerow.appendChild(cell);
+	} else if (typeof items == "array" || typeof items == "object") {
+		for ( var c = 0; c < items.length; c++) {
+			var cell = document.createElement('treecell');
+			cell.setAttribute('label', items[c]);
+			treerow.appendChild(cell);
+		}
+	}
+	
+	treeitem.appendChild(treerow);
+	
+	return treeitem;
 }
