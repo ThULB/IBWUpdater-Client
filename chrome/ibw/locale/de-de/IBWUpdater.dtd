@@ -1,19 +1,22 @@
 <!-- Entities for Preferences Dialog -->
-<!ENTITY  pref.title            "IBW Updater">
+<!ENTITY  pref.title                    "IBW Updater">
+<!ENTITY  pref.updateAddress            "Adresse des Updateservices">
+<!ENTITY  pref.updateSourceLocation     "URL:">
+
 
 <!-- Entities for Updater Dialog -->
-<!ENTITY  dlg.title             "IBW Updater">
-<!ENTITY  dlg.init              "Initialisiere...">
-<!ENTITY  dlg.total             "Gesamt">
-<!ENTITY  dlg.details           "Details...">
+<!ENTITY  dlg.title                     "IBW Updater">
+<!ENTITY  dlg.init                      "Initialisiere...">
+<!ENTITY  dlg.total                     "Gesamt">
+<!ENTITY  dlg.details                   "Details...">
 
 <!-- Entities for Summary Dialog -->
-<!ENTITY  summary.title         "Zusammenfassung">
-<!ENTITY  summary.description   "Nachfolgend finden Sie eine Liste der installierten bzw. aktualisierten Scripte.">
+<!ENTITY  summary.title                 "Zusammenfassung">
+<!ENTITY  summary.description           "Nachfolgend finden Sie eine Liste der installierten bzw. aktualisierten Scripte.">
 
-<!ENTITY  summary.btnClose      "Schliessen">
+<!ENTITY  summary.btnClose              "Schliessen">
 
-<!ENTITY  summary.col.name      "Name">
-<!ENTITY  summary.col.desc      "Beschreibung">
-<!ENTITY  summary.col.type      "Typ">
-<!ENTITY  summary.col.version   "Version">
+<!ENTITY  summary.col.name              "Name">
+<!ENTITY  summary.col.desc              "Beschreibung">
+<!ENTITY  summary.col.type              "Typ">
+<!ENTITY  summary.col.version           "Version">

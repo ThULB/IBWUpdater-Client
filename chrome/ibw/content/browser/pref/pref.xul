@@ -1,0 +1,213 @@
+<?xml version="1.0"?> 
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://ibw/content/browser/pref/pref.css" type="text/css"?>
+
+<!DOCTYPE dialog [
+<!ENTITY % prefDTD SYSTEM "chrome://ibw/locale/pref.dtd" >
+%prefDTD;
+]>
+
+<dialog id="prefDialog" 
+        xmlns          = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        title          = "&prefWindow.title;" 
+        style          = "width: 70em; height: 48em;"
+        buttons        = "accept,cancel" 
+        windowtype     = "Browser:Options"
+        onload         = "Startup();" 
+        onunload       = "Shutdown();"
+        ondialogaccept = "return hPrefWindow.onOK( event );"
+        ondialogcancel = "return hPrefWindow.onCancel( event );"
+        persist        = "screenX screenY"> 
+
+  <script type="application/x-javascript" src="chrome://ibw/content/global/globalOverlay.js"/>
+  <script type="application/x-javascript" src="chrome://ibw/content/global/widgetStateManager.js"/>
+  <script type="application/x-javascript" src="chrome://ibw/content/global/nsWidgetStateManager.js"/>
+  <script type="application/x-javascript" src="chrome://ibw/content/browser/pref/widgetStateManager.js"/>
+  <script type="application/x-javascript" src="chrome://ibw/content/browser/pref/nsWidgetStateManager.js"/>
+  <script type="application/x-javascript" src="chrome://ibw/content/browser/pref/nsPrefWindow.js"/>
+  <script>
+  <![CDATA[
+
+  var hPrefWindow = null;
+  
+  // If we're starting the Options dialog with a specific panel, we should do certain things
+  // like not remember the last panel the user visited. 
+  var gUsingSpecifiedPage = false;
+
+  // General startup routine for preferences dialog. 
+  // Place all necessary modifications to pref tree here. 
+  function Startup()
+  {
+     hPrefWindow = new nsPrefWindow( "panelFrame" );  
+    
+     if ( !hPrefWindow )
+     {
+        throw "failed to create prefwindow";
+     } 
+     else 
+     {
+        //window.alert("pref.xul: estabished link to parent window\n");
+     }
+     hPrefWindow.init();
+   
+     if ( "arguments" in window && window.arguments[0] ) 
+     {
+        // switchPage( window.arguments[0] );
+        // gUsingSpecifiedPage = true;
+        document.getElementById("prefsCategories").removeAttribute("persist");
+        // focus the correct menu item
+        button.focus();
+     } 
+     else 
+     {
+        // focus the correct menu item
+        button.focus();
+     }
+  }
+    
+  function Shutdown ()
+  {
+     // shutdown on [OK,Cancel]
+     // Make lastPanel persistent; put lastPanel.index in a preference
+     if ( !gUsingSpecifiedPage ) {
+        var prefsCategories = document.getElementById( "prefsCategories" );
+        for ( var i = 0; i < prefsCategories.childNodes.length; ++i ) {
+            if ( prefsCategories.childNodes[i].checked ) {
+               var pref = Components.classes["@mozilla.org/preferences-service;1"]
+                                    .getService( Components.interfaces.nsIPrefBranch );
+               pref.setIntPref( "winibw.preferences.lastpanel", i );
+               break;
+            }
+        }
+        document.persist( "prefsDialog", "screenX screenY" );
+     }
+     var application = Components.classes["@oclcpica.nl/kitabapplication;1"]
+	 					.getService(Components.interfaces.IApplication);
+     application.activate();
+  } 
+   
+  function switchPage( aButtonID )
+  {
+     var button = document.getElementById( aButtonID );
+     if ( button ) {
+        var newURL = button.getAttribute( "url" );
+        if ( hPrefWindow )
+        {
+           hPrefWindow.switchPage( newURL, "" );
+        }
+        else
+        {  // just in case hPrefWindow is null ...
+           document.getElementById("panelFrame").setAttribute( "src", newURL );
+        }
+        button.checked = true;
+        button.focus();
+     }
+     //alert( hPrefWindow.wsm.toString() );
+  }    
+
+  ]]>
+  </script>        
+        
+  <stringbundle id="bundle_prefutilities"
+          src="chrome://ibw/locale/prefutilities.properties"/>
+  <script type="application/x-javascript" 
+          src="chrome://embed/content/global/nsWidgetStateManager.js"/>
+  <script type="application/x-javascript" 
+          src="chrome://ibw/content/browser/pref/nsPrefWindow.js"/>
+          
+  <script type="application/x-javascript" 
+          src="chrome://ibw/content/browser/pref/widgetStateManager.js"/>
+  <script type="application/x-javascript" 
+          src="chrome://ibw/content/browser/pref/nsWidgetStateManager.js"/>
+  <script type="application/x-javascript" 
+          src="chrome://ibw/content/browser/pref/nsPrefWindow.js"/>
+
+  <hbox flex="1">
+    <vbox id="prefsCategories" 
+          class="listBox buttonBox" 
+          oncommand="switchPage( event.target.id );" 
+          orient="vertical" 
+          onmouseover="focus();">
+      <button id="catGeneralButton1"   
+              orient="vertical" 
+              class="buttonBoxButton" 
+              type="radio" 
+              group="categories" 
+              label="&general1.label;"   
+              url="chrome://ibw/content/browser/pref/pref-general.xul"/>
+      <button id="catGeneralButton2"   
+              orient="vertical" 
+              class="buttonBoxButton" 
+              type="radio" 
+              group="categories" 
+              label="&general2.label;"   
+              url="chrome://ibw/content/browser/pref/pref-general2.xul"/>
+      <button id="catIBWUpdater"   
+              orient="vertical" 
+              class="buttonBoxButton" 
+              type="radio" 
+              group="categories" 
+              label="IBWUpdater"   
+              url="chrome://ibw/content/browser/pref/pref-IBWUpdater.xul"/>        
+      <button id="catFontsAndColorsButton"   
+              orient="vertical" 
+              class="buttonBoxButton" 
+              type="radio" 
+              group="categories" 
+              label="&fontsandcolors.label;"   
+              url="chrome://ibw/content/browser/pref/pref-fontsandcolors.xul"/>           
+      <button id="catMessagesButton"
+              orient="vertical"
+              class="buttonBoxButton"
+              type="radio"
+              group="categories"
+              label="&messages.label;"  
+              url="chrome://ibw/content/browser/pref/pref-messages.xul"/>
+      <!--
+      <button id="catAdvancedButton"
+              orient="vertical"
+              class="buttonBoxButton"
+              type="radio"
+              group="categories"
+              label="&advanced.label;"
+              url="chrome://ibw/content/browser/pref/pref-advanced.xul"/>
+       -->
+    </vbox>
+    
+    <vbox flex="1">
+      <dialogheader id="header"/>
+      <iframe id="panelFrame" 
+              name="panelFrame" 
+              style="width: 0px" 
+              flex="1"/>
+    </vbox>
+  </hbox>
+
+  <hbox>
+    <separator flex="1"/>
+  </hbox>
+
+  <!-- sigh. this dirty little thing is necessary because the load handler of the 
+       preferences dialog causes the window to be shown even though the preferences
+       panel itself hasn't finished loading. -->
+  <script type="application/x-javascript">
+  <![CDATA[
+    var pref = Components.classes["@mozilla.org/preferences-service;1"]
+                         .getService( Components.interfaces.nsIPrefBranch );
+    var lastPanel = 0;
+    try {
+      lastPanel = pref.getIntPref("winibw.preferences.lastpanel");
+    }
+    catch (e) {}
+    var prefsCategories = document.getElementById( "prefsCategories" );
+    var button = prefsCategories.childNodes[lastPanel];
+    document.getElementById("panelFrame").setAttribute( "src", button.getAttribute( "url" ));
+    button.checked = true;
+    prefsCategories.focus();
+  ]]>
+  </script>
+  
+  <separator flex="1"/>
+     
+</dialog>

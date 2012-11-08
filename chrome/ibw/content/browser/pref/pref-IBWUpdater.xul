@@ -24,23 +24,23 @@
 <?xml-stylesheet href="chrome://ibw/content/browser/pref/pref.css" type="text/css"?>
 
 <!DOCTYPE page [
-  <!ENTITY % UpdaterDTD SYSTEM "chrome://ibw/locale/updater.dtd">
+  <!ENTITY % UpdaterDTD SYSTEM "chrome://ibw/locale/IBWUpdater.dtd">
   %UpdaterDTD;
 ]>
 
 <page xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-      onload="parent.initPanel('chrome://ibw/content/browser/pref/pref-updater.xul');"
+      id = "pref-IBWUpdater"    
+      onload="parent.initPanel('chrome://ibw/content/browser/pref/pref-IBWUpdater.xul');"
       headertitle="&pref.title;">
 
-    <script type="application/x-javascript" src="chrome://ibw/content/browser/pref/pref-updater.js"/>
+    <script type="application/x-javascript" src="chrome://ibw/content/browser/pref/pref-IBWUpdater.js"/>
  
     <groupbox>
-        <caption label="&pref.title;"/>
-        <hbox align="center">
-      <label value="HELLO WORLD!" 
-             class="prefLabel" 
-             />
-    </hbox>
+        <caption label="&pref.updateAddress;"/>
+        <hbox align="left"> 
+            <label value="&pref.updateSourceLocation;" class="prefLabel"/>          
+            <textbox id="idUpdateSourceLocation" class="prefInputBox" type="string" readonly="false" flex="1" oninput="setUpdateSourceLocation( this.value );" preftype="string"/>                 
+      </hbox> 
     </groupbox>
 
 </page>
