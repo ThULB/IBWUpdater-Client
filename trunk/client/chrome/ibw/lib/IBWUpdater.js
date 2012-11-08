@@ -196,8 +196,14 @@ function IBWUpdater() {
 	 * Init IBWUpdater and check if packages available.
 	 */
 	function init() {
-		var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
-		updaterURL = pref.getComplexValue("IBWUpdater.url", Components.interfaces.nsISupportsString).data;
+		try {
+			var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+			updaterURL = pref.getComplexValue("IBWUpdater.url", Components.interfaces.nsISupportsString).data;
+		} catch (e) {
+			// do nothing
+		}
+		
+		updaterURL = updaterURL == null ? "http://service.bibliothek.tu-ilmenau.de/ibwupd/" : updaterURL;
 
 		// get local UID for user specified scripts
 		var profDir = IBWUpdaterHelper.getSpecialDir("Home", Components.interfaces.nsIFile);
@@ -791,7 +797,7 @@ function IBWUpdaterPackages() {
 
 				processing = false;
 				processDoneCallback();
-				
+
 				return;
 			}
 
