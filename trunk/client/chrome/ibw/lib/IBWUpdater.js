@@ -196,7 +196,8 @@ function IBWUpdater() {
 	 * Init IBWUpdater and check if packages available.
 	 */
 	function init() {
-		updaterURL = "http://service.bibliothek.tu-ilmenau.de/ibwupd/";
+		var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+		updaterURL = pref.getComplexValue("IBWUpdater.url", Components.interfaces.nsISupportsString).data;
 
 		// get local UID for user specified scripts
 		var profDir = IBWUpdaterHelper.getSpecialDir("Home", Components.interfaces.nsIFile);
