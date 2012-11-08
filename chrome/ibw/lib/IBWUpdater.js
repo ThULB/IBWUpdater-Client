@@ -181,7 +181,7 @@ function IBWUpdater() {
 
 	var that = this;
 
-	var updaterURL = "";
+	var updaterURL = null;
 	var lastChecked = null;
 	var updaterDialog = null;
 
