@@ -1,0 +1,58 @@
+<?xml version="1.0"?> 
+<!--
+/**
+ * 
+ * @version $Revision$ $Date$
+ * @author René Adler
+ *
+ * This program is free software; you can use it, redistribute it
+ * and / or modify it under the terms of the GNU General Public License
+ * (GPL) as published by the Free Software Foundation; either version 2
+ * of the License or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program, in a file called gpl.txt or license.txt.
+ * If not, write to the Free Software Foundation Inc.,
+ * 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+ */
+-->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE page [
+  <!ENTITY % UpdaterDTD SYSTEM "chrome://ibw/locale/IBWUpdater.dtd">
+  %UpdaterDTD;
+]>
+
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      title="&dlg.title; - &summary.title;"
+      onload="onLoad();">
+
+    <script type="application/x-javascript" src="resource:/chrome/ibw/lib/IBWUpdater.js"/>
+    <script type="application/x-javascript" src="IBWUpdaterSummaryDialog.js"/>
+ 
+    <vbox flex="1" width="450">
+        <groupbox flex="1">
+            <description value="&summary.description;" />
+            <tree id="tPackages" hidecolumnpicker="true" seltype="single" flex="1" minheight="150">
+                <treecols>
+                    <treecol id="name" label="&summary.col.name;" flex="1" primary="true" />
+                    <splitter class="tree-splitter"/>
+                    <treecol id="desc" label="&summary.col.desc;" flex="2" />
+                    <splitter class="tree-splitter"/>
+                    <treecol id="type" label="&summary.col.type;" flex="1" />
+                    <splitter class="tree-splitter"/>
+                    <treecol id="version" label="&summary.col.version;" flex="1" />
+                </treecols>
+                <treechildren />
+            </tree>
+        </groupbox>
+        <hbox align="right" height="40" style="vertical-align:middle;">
+            <button id="btnClose" label="&summary.btnClose;" oncommand="close();" />
+        </hbox>
+    </vbox>
+</window>

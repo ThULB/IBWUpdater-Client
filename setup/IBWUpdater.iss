@@ -39,12 +39,14 @@ Source: ..\scripts\IBWUpdater.js; DestDir: {app}\scripts; AfterInstall: installS
 Source: ..\chrome\ibw\lib\IBWUpdater.js; DestDir: {app}\chrome\ibw\lib; Flags: overwritereadonly replacesameversion ignoreversion
 Source: ..\chrome\ibw\content\browser\pref\pref-IBWUpdater.js; DestDir: {app}\chrome\ibw\content\browser\pref; Flags: overwritereadonly replacesameversion ignoreversion
 Source: ..\chrome\ibw\content\browser\pref\pref-IBWUpdater.xul; DestDir: {app}\chrome\ibw\content\browser\pref; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\locale\de-de\IBWUpdaterDialog.dtd; DestDir: {app}\chrome\ibw\locale\de-de; Flags: overwritereadonly replacesameversion ignoreversion
+Source: ..\chrome\ibw\locale\de-de\IBWUpdater.dtd; DestDir: {app}\chrome\ibw\locale\de-de; Flags: overwritereadonly replacesameversion ignoreversion
 Source: ..\chrome\ibw\locale\de-de\IBWUpdater.properties; DestDir: {app}\chrome\ibw\locale\de-de; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\locale\en-us\IBWUpdaterDialog.dtd; DestDir: {app}\chrome\ibw\locale\en-us; Flags: overwritereadonly replacesameversion ignoreversion
+Source: ..\chrome\ibw\locale\en-us\IBWUpdater.dtd; DestDir: {app}\chrome\ibw\locale\en-us; Flags: overwritereadonly replacesameversion ignoreversion
 Source: ..\chrome\ibw\locale\en-us\IBWUpdater.properties; DestDir: {app}\chrome\ibw\locale\en-us; Flags: overwritereadonly replacesameversion ignoreversion
 Source: ..\chrome\ibw\content\xul\IBWUpdaterDialog.xul; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
 Source: ..\chrome\ibw\content\xul\IBWUpdaterDialog.js; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
+Source: ..\chrome\ibw\content\xul\IBWUpdaterSummaryDialog.xul; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
+Source: ..\chrome\ibw\content\xul\IBWUpdaterSummaryDialog.js; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
 [Code]
 procedure installScript();
 var

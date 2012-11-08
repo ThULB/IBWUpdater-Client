@@ -1,0 +1,19 @@
+<!-- Entities for Preferences Dialog -->
+<!ENTITY  pref.title        "IBW Updater">
+
+<!-- Entities for Updater Dialog -->
+<!ENTITY  dlg.title         "IBW Updater">
+<!ENTITY  dlg.init          "Initialize...">
+<!ENTITY  dlg.total         "Total">
+<!ENTITY  dlg.details       "Details...">
+
+<!-- Entities for Summary Dialog -->
+<!ENTITY  summary.title         "Summary">
+<!ENTITY  summary.description   "Below is a list of installed or updated scripts.">
+
+<!ENTITY  summary.btnClose      "Close">
+
+<!ENTITY  summary.col.name      "Name">
+<!ENTITY  summary.col.desc      "Description">
+<!ENTITY  summary.col.type      "Type">
+<!ENTITY  summary.col.version   "Version">

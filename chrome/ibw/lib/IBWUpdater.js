@@ -345,6 +345,13 @@ function IBWUpdater() {
 	};
 
 	/**
+	 * Return all packages to install btw. installed
+	 */
+	this.getPackages = function() {
+		return packages.getPackages();
+	}
+
+	/**
 	 * Used to start Dialog and begin updates.
 	 */
 	this.start = function() {
@@ -356,10 +363,12 @@ function IBWUpdater() {
 	 * 
 	 * @param {Object}
 	 *            progressCallback - the progress Callback function.
+	 * @param {Object}
+	 *            processDoneCallback - the progress done Callback function.
 	 */
-	this.processPackages = function(progressCallback) {
+	this.processPackages = function(progressCallback, processDoneCallback) {
 		try {
-			packages.startProcessing(progressCallback);
+			packages.startProcessing(progressCallback, processDoneCallback);
 		} catch (ex) {
 			throw new IBWUpdaterException(ex);
 		}
@@ -378,6 +387,7 @@ function IBWUpdaterPackages() {
 
 	// callbacks
 	var progressCallback = null;
+	var processDoneCallback = null;
 
 	// packages data
 	var localPackages = new Array();
@@ -779,6 +789,8 @@ function IBWUpdaterPackages() {
 				saveInstalled();
 
 				processing = false;
+				processDoneCallback();
+				
 				return;
 			}
 
@@ -837,15 +849,25 @@ function IBWUpdaterPackages() {
 	};
 
 	/**
+	 * Return all packages to install btw. installed
+	 */
+	this.getPackages = function() {
+		return packages;
+	};
+
+	/**
 	 * Starts processing.
 	 * 
 	 * @param {Object}
 	 *            aProgressCallback - the Callback function for progress updates
+	 * @param {Object}
+	 *            aProcessDoneCallback - the progress done Callback function.
 	 */
-	this.startProcessing = function(aProgressCallback) {
+	this.startProcessing = function(aProgressCallback, aProcessDoneCallback) {
 		if (!processing) {
 			processing = !processing;
 			progressCallback = aProgressCallback;
+			processDoneCallback = aProcessDoneCallback;
 
 			nextPackage();
 
