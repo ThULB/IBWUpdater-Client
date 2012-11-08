@@ -1,8 +1,9 @@
 <!-- Entities for Preferences Dialog -->
 <!ENTITY  pref.title                    "IBW Updater">
 <!ENTITY  pref.updateAddress            "Adresse des Updateservices">
+<!ENTITY  pref.installedPackages        "Installierte Scripte">
 <!ENTITY  pref.updateSourceLocation     "URL:">
-
+<!ENTITY  pref.forceInstall             "Erzwinge Neuinstallation">
 
 <!-- Entities for Updater Dialog -->
 <!ENTITY  dlg.title                     "IBW Updater">

@@ -33,6 +33,7 @@
       onload="parent.initPanel('chrome://ibw/content/browser/pref/pref-IBWUpdater.xul');"
       headertitle="&pref.title;">
 
+    <script type="application/x-javascript" src="resource:/chrome/ibw/lib/IBWUpdater.js"/>
     <script type="application/x-javascript" src="chrome://ibw/content/browser/pref/pref-IBWUpdater.js"/>
  
     <groupbox>
@@ -42,5 +43,22 @@
             <textbox id="idUpdateSourceLocation" class="prefInputBox" type="string" readonly="false" flex="1" oninput="setUpdateSourceLocation( this.value );" preftype="string"/>                 
       </hbox> 
     </groupbox>
-
+    <groupbox flex="1">
+        <caption label="&pref.installedPackages;"/>
+        <tree id="tPackages" hidecolumnpicker="true" seltype="single" flex="1" minheight="150">
+            <treecols>
+                <treecol id="name" label="&summary.col.name;" flex="1" primary="true" />
+                <splitter class="tree-splitter"/>
+                <treecol id="desc" label="&summary.col.desc;" flex="2" />
+                <splitter class="tree-splitter"/>
+                <treecol id="type" label="&summary.col.type;" flex="1" />
+                <splitter class="tree-splitter"/>
+                <treecol id="version" label="&summary.col.version;" flex="1" />
+            </treecols>
+            <treechildren />
+        </tree>
+    </groupbox>
+    <hbox align="right">
+        <button id="btnForceInstall" label="&pref.forceInstall;" onclick="startForcedInstall()" />
+    </hbox>
 </page>

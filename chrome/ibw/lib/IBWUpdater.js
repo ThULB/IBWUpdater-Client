@@ -176,16 +176,14 @@ var IBWUpdaterHelper = {
 /**
  * The IBWUpdater main class.
  */
-function IBWUpdater() {
+function IBWUpdater(aForceInstall) {
 	this.wrappedJSObject = this;
-
-	var that = this;
 
 	var updaterURL = null;
 	var lastChecked = null;
-	var updaterDialog = null;
+	var forceInstall = aForceInstall;
 
-	var packages = new IBWUpdaterPackages();
+	var packages = new IBWUpdaterPackages(forceInstall);
 
 	var localUID = "";
 
@@ -224,7 +222,7 @@ function IBWUpdater() {
 	 */
 	function openUpdaterDialog() {
 		var ww = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-		updaterDialog = ww.openWindow(null, "chrome://ibw/content/xul/IBWUpdaterDialog.xul", "", "chrome,dialog=yes,centerscreen", that);
+		ww.openWindow(null, "chrome://ibw/content/xul/IBWUpdaterDialog.xul", "", "chrome,dialog=yes,centerscreen");
 	}
 
 	/**
@@ -356,7 +354,11 @@ function IBWUpdater() {
 	 */
 	this.getPackages = function() {
 		return packages.getPackages();
-	}
+	};
+	
+	this.getInstalledPackages = function() {
+		return packages.getInstalledPackages();
+	};
 
 	/**
 	 * Used to start Dialog and begin updates.
@@ -364,7 +366,7 @@ function IBWUpdater() {
 	this.start = function() {
 		openUpdaterDialog();
 	};
-
+	
 	/**
 	 * Starts package download and installation process.
 	 * 
@@ -389,13 +391,15 @@ function IBWUpdater() {
  * If an package not found on local installed the would downloaded, extract and
  * installed.
  */
-function IBWUpdaterPackages() {
+function IBWUpdaterPackages(aForceInstall) {
 	var that = this;
 
 	// callbacks
 	var progressCallback = null;
 	var processDoneCallback = null;
 
+	var forceInstall = aForceInstall;
+	
 	// packages data
 	var localPackages = new Array();
 	var packages = new Array();
@@ -413,7 +417,7 @@ function IBWUpdaterPackages() {
 	var pID = -1;
 	var pProcessing = false;
 	var packageFile = null;
-
+	
 	// HTTP channel
 	var mChannel = null;
 
@@ -452,6 +456,12 @@ function IBWUpdaterPackages() {
 						pkg.setID(pkgs.item(c).getAttribute("id"));
 						pkg.setType(pkgs.item(c).getAttribute("type"));
 						pkg.setVersion(pkgs.item(c).getAttribute("version"));
+						
+						if (pkgs.item(c).getElementsByTagName("name").length != 0)
+							pkg.setName(pkgs.item(c).getElementsByTagName("name").item(0).textContent);
+
+						if (pkgs.item(c).getElementsByTagName("description").length != 0)
+							pkg.setDescription(pkgs.item(c).getElementsByTagName("description").item(0).textContent);
 
 						if (pkgs.item(c).getElementsByTagName("fileList").length != 0) {
 							var fileList = new Array();
@@ -485,6 +495,12 @@ function IBWUpdaterPackages() {
 						pkg.setID(pkgs.item(c).getAttribute("id"));
 						pkg.setType(pkgs.item(c).getAttribute("type"));
 						pkg.setVersion(pkgs.item(c).getAttribute("version"));
+						
+						if (pkgs.item(c).getElementsByTagName("name").length != 0)
+							pkg.setName(pkgs.item(c).getElementsByTagName("name").item(0).textContent);
+
+						if (pkgs.item(c).getElementsByTagName("description").length != 0)
+							pkg.setDescription(pkgs.item(c).getElementsByTagName("description").item(0).textContent);
 
 						// type user
 						if (pkgs.item(c).getElementsByTagName("function").length != 0) {
@@ -515,6 +531,8 @@ function IBWUpdaterPackages() {
 
 			if (pkg.getType() == "common") {
 				comPackages += "\t<package id=\"" + pkg.getID() + "\" type=\"" + pkg.getType() + "\" version=\"" + pkg.getVersion() + "\">\n";
+				comPackages += "\t\t<name>" + IBWUpdaterHelper.toUnicode(pkg.getName()) + "</name>\n";
+				comPackages += "\t\t<description>" + IBWUpdaterHelper.toUnicode(pkg.getDescription()) + "</description>\n";
 				var fileList = pkg.getFileList();
 				if (fileList.length != 0) {
 					comPackages += "\t\t<fileList>\n";
@@ -529,6 +547,8 @@ function IBWUpdaterPackages() {
 				comPackages += "\t</package>\n";
 			} else if (pkg.getType() == "user") {
 				usrPackages += "\t<package id=\"" + pkg.getID() + "\" type=\"" + pkg.getType() + "\" version=\"" + pkg.getVersion() + "\">\n";
+				usrPackages += "\t\t<name>" + IBWUpdaterHelper.toUnicode(pkg.getName()) + "</name>\n";
+				usrPackages += "\t\t<description>" + IBWUpdaterHelper.toUnicode(pkg.getDescription()) + "</description>\n";
 				var funcs = pkg.getFunction();
 				if (funcs.length != 0) {
 					for ( var i in funcs) {
@@ -850,7 +870,7 @@ function IBWUpdaterPackages() {
 	 *            aPackage - the package object
 	 */
 	this.addPackage = function(aPackage) {
-		if (!isInstalled(aPackage)) {
+		if (forceInstall || !isInstalled(aPackage)) {
 			packages.push(aPackage);
 		}
 	};
@@ -860,6 +880,10 @@ function IBWUpdaterPackages() {
 	 */
 	this.getPackages = function() {
 		return packages;
+	};
+	
+	this.getInstalledPackages = function() {
+		return localPackages;
 	};
 
 	/**

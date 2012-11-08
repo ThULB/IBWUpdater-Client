@@ -23,8 +23,8 @@ var wasPrevStarted = false;
 
 function onLoad() {
 	try {
-		//updater = window.arguments[0].wrappedJSObject;
-		updater = new IBWUpdater();
+		forceInstall = window.arguments[0].forceInstall;
+		updater = new IBWUpdater(forceInstall);
 	} catch (ex) {
 		application.messageBox("IBWUpdater", ex, "error-icon");
 	}
