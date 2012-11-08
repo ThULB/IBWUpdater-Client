@@ -24,7 +24,7 @@
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 
 <!DOCTYPE page [
-  <!ENTITY % UpdaterDTD SYSTEM "chrome://ibw/locale/IBWUpdaterDialog.dtd">
+  <!ENTITY % UpdaterDTD SYSTEM "chrome://ibw/locale/IBWUpdater.dtd">
   %UpdaterDTD;
 ]>
 
@@ -37,15 +37,19 @@
     <script type="application/x-javascript" src="resource:/chrome/ibw/lib/IBWUpdater.js"/>
     <script type="application/x-javascript" src="IBWUpdaterDialog.js"/>
  
-    <vbox flex="1" width="450" height="135">
+    <vbox flex="1" width="450">
         <groupbox>
             <caption id="lbPackageName" label="..." />
-            <vbox flex="1">
+            <vbox id="pkgProgress" flex="1">
                 <label id="lbStep" value="&dlg.init;" />
                 <hbox align="center">
                     <progressmeter id="pbSingle" mode="determined" value="0" width="390" style="background-color:#ffffff; border-width: 2px; border-style:inset; margin: 4px;" />
                     <caption id="lbProgressSingle" align="right" label="0%" width="40" />
                 </hbox>
+            </vbox>
+            <vbox id="processingDone" flex="1" hidden="true">
+                <description id="descSummary" style="width: 390px" />
+                <label id="lbDetailsLink" value="&dlg.details;" style="color: blue; cursor: pointer; font-weight: bold;" onclick="openSummary();" />
             </vbox>
         </groupbox>
         <groupbox>

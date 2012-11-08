@@ -64,8 +64,45 @@ function startProcessing() {
 
 			document.getElementById("pbTotal").value = progress.total;
 			document.getElementById("lbProgressTotal").label = progress.total + "%";
-		});
+		}, doneProcessing);
 	} catch (ex) {
 		application.messageBox("IBWUpdater", ex, "error-icon");
 	}
+}
+
+function doneProcessing() {
+	var packages = updater.getPackages();
+	var cCommon = 0;
+	var cUser = 0;
+
+	for (var c=0; c < packages.length; c++) {
+		if (packages[c].getType() == "common")
+			cCommon++;
+		else
+			cUser++;
+	}
+	document.getElementById("pkgProgress").hidden = true;
+	
+	document.getElementById("lbPackageName").label = I18N.getLocalizedMessage("summary.title");
+	document.getElementById("processingDone").hidden = false;
+	
+	var desc = I18N.getLocalizedMessage("summary.installedTotal" + (packages.length == 1 ? "One" : ""), packages.length);
+	
+	if (cCommon != 0 && cUser != 0)
+		desc += I18N.getLocalizedMessage("summary.installedCommon"+ (cCommon == 1 ? "One" : "") + "AndUser" + (cUser == 1 ? "One" : ""), cCommon, cUser);
+	else if (cCommon > 1)
+		desc += I18N.getLocalizedMessage("summary.installedCommon", cCommon);
+	else if (cUser > 1)
+		desc += I18N.getLocalizedMessage("summary.installedUser", cUser);
+	else
+		desc += ".";
+	
+	document.getElementById("descSummary").textContent = desc;
+	
+	window.sizeToContent();
+}
+
+function openSummary() {
+	var packages = updater.getPackages();
+	window.openDialog("chrome://ibw/content/xul/IBWUpdaterSummaryDialog.xul", "Summary", "centerscreen,modal,resizable", {"packages": packages});
 }
