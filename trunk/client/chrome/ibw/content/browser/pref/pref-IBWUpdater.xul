@@ -41,7 +41,7 @@
         <hbox align="left"> 
             <label value="&pref.updateSourceLocation;" class="prefLabel"/>          
             <textbox id="idUpdateSourceLocation" class="prefInputBox" type="string" readonly="false" flex="1" oninput="setUpdateSourceLocation( this.value );" preftype="string"/>                 
-      </hbox> 
+        </hbox> 
     </groupbox>
     <groupbox flex="1">
         <caption label="&pref.installedPackages;"/>
