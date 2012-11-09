@@ -58,7 +58,12 @@
             <treechildren />
         </tree>
     </groupbox>
-    <hbox align="right">
-        <button id="btnForceInstall" label="&pref.forceInstall;" onclick="startForcedInstall()" />
+    <hbox>
+        <hbox flex="1">
+            <label id="lbVersion" value="&pref.version;" />
+        </hbox>
+        <hbox align="right">
+            <button id="btnForceInstall" label="&pref.forceInstall;" onclick="startForcedInstall()" />
+        </hbox>
     </hbox>
 </page>

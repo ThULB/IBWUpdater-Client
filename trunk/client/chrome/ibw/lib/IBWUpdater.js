@@ -179,6 +179,11 @@ var IBWUpdaterHelper = {
 function IBWUpdater(aForceInstall) {
 	this.wrappedJSObject = this;
 
+	var that = this;
+	
+	var version = "1.0";
+	var revision = "$Revision$";
+	
 	var updaterURL = null;
 	var lastChecked = null;
 	var forceInstall = aForceInstall;
@@ -222,7 +227,7 @@ function IBWUpdater(aForceInstall) {
 	 */
 	function openUpdaterDialog() {
 		var ww = Components.classes["@mozilla.org/embedcomp/window-watcher;1"].getService(Components.interfaces.nsIWindowWatcher);
-		ww.openWindow(null, "chrome://ibw/content/xul/IBWUpdaterDialog.xul", "", "chrome,dialog=yes,centerscreen");
+		ww.openWindow(null, "chrome://ibw/content/xul/IBWUpdaterDialog.xul", "", "chrome,dialog=yes,centerscreen", that);
 	}
 
 	/**
@@ -331,6 +336,12 @@ function IBWUpdater(aForceInstall) {
 		return updaterURL;
 	};
 
+	this.getVersion = function() {
+		var build = revision.match(/\d+/);
+		
+		return version + "." + build;
+	};
+	
 	/**
 	 * Returns <code>true</code> if updates available.
 	 * 

@@ -28,15 +28,16 @@ var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(C
 var iMode = Components.interfaces.nsISupportsString;
 
 function Startup() {
-	idWindow = "pref-IBWUpdater";	
+	idWindow = "pref-IBWUpdater";
 	try {
 		gPrefWindow = window.parent.hPrefWindow;
 	} catch (e) {
 		alert("FAIL[pref-IBWUpdater.js]: could not establish link to parent\nEXEPTION: " + e);
 	}
+	
 	gPrefWindow.registerOKCallbackFunc(onOK);
 	getUpdateSourceLocation();
-
+	
 	showInstalled();
 	
 	return true;
@@ -117,6 +118,10 @@ function setUpdateSourceLocation(value) {
 
 function showInstalled() {
 	var updater = new IBWUpdater();
+	
+	var lbVersion = document.getElementById('lbVersion');
+	lbVersion.value += updater.getVersion();
+	
 	var packages = updater.getInstalledPackages();
 	
 	var tList = document.getElementById('tPackages');

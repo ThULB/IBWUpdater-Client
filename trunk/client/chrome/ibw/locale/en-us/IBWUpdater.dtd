@@ -3,6 +3,7 @@
 <!ENTITY  pref.updateAddress            "Addresse Update Services">
 <!ENTITY  pref.installedPackages        "Installed Scripts">
 <!ENTITY  pref.updateSourceLocation     "URL:">
+<!ENTITY  pref.version                  "Version: ">
 <!ENTITY  pref.forceInstall             "Force installation">
 
 <!-- Entities for Updater Dialog -->
