@@ -209,14 +209,14 @@ function IBWUpdater(aForceInstall) {
 		updaterURL = updaterURL == null ? "http://service.bibliothek.tu-ilmenau.de/ibwupd/" : updaterURL;
 
 		// get local UID for user specified scripts
-		var profDir = IBWUpdaterHelper.getSpecialDir("Home", Components.interfaces.nsIFile);
+		var profDir = IBWUpdaterHelper.getSpecialDir("DeskV", Components.interfaces.nsIFile);
 		if (profDir != null) {
 			var parts = profDir.path.split("\\");
-			localUID = parts[parts.length - 1].toLowerCase();
-		} else {
-			profDir = IBWUpdaterHelper.getSpecialDir("DeskV", Components.interfaces.nsIFile);
-			var parts = profDir.path.split("\\");
 			localUID = parts[parts.length - 2].toLowerCase();
+		} else {
+			profDir = IBWUpdaterHelper.getSpecialDir("Home", Components.interfaces.nsIFile);
+			var parts = profDir.path.split("\\");
+			localUID = parts[parts.length - 1].toLowerCase();
 		}
 
 		checkUpdates();
