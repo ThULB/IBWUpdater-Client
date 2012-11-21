@@ -180,10 +180,10 @@ function IBWUpdater(aForceInstall) {
 	this.wrappedJSObject = this;
 
 	var that = this;
-	
+
 	var version = "1.0";
 	var revision = "$Revision$";
-	
+
 	var updaterURL = null;
 	var lastChecked = null;
 	var forceInstall = aForceInstall;
@@ -205,7 +205,7 @@ function IBWUpdater(aForceInstall) {
 		} catch (e) {
 			// do nothing
 		}
-		
+
 		updaterURL = updaterURL == null ? "http://service.bibliothek.tu-ilmenau.de/ibwupd/" : updaterURL;
 
 		// get local UID for user specified scripts
@@ -338,10 +338,10 @@ function IBWUpdater(aForceInstall) {
 
 	this.getVersion = function() {
 		var build = revision.match(/\d+/);
-		
+
 		return version + "." + build;
 	};
-	
+
 	/**
 	 * Returns <code>true</code> if updates available.
 	 * 
@@ -366,7 +366,7 @@ function IBWUpdater(aForceInstall) {
 	this.getPackages = function() {
 		return packages.getPackages();
 	};
-	
+
 	this.getInstalledPackages = function() {
 		return packages.getInstalledPackages();
 	};
@@ -377,7 +377,7 @@ function IBWUpdater(aForceInstall) {
 	this.start = function() {
 		openUpdaterDialog();
 	};
-	
+
 	/**
 	 * Starts package download and installation process.
 	 * 
@@ -410,7 +410,7 @@ function IBWUpdaterPackages(aForceInstall) {
 	var processDoneCallback = null;
 
 	var forceInstall = aForceInstall;
-	
+
 	// packages data
 	var localPackages = new Array();
 	var packages = new Array();
@@ -428,7 +428,7 @@ function IBWUpdaterPackages(aForceInstall) {
 	var pID = -1;
 	var pProcessing = false;
 	var packageFile = null;
-	
+
 	// HTTP channel
 	var mChannel = null;
 
@@ -467,7 +467,7 @@ function IBWUpdaterPackages(aForceInstall) {
 						pkg.setID(pkgs.item(c).getAttribute("id"));
 						pkg.setType(pkgs.item(c).getAttribute("type"));
 						pkg.setVersion(pkgs.item(c).getAttribute("version"));
-						
+
 						if (pkgs.item(c).getElementsByTagName("name").length != 0)
 							pkg.setName(pkgs.item(c).getElementsByTagName("name").item(0).textContent);
 
@@ -506,7 +506,7 @@ function IBWUpdaterPackages(aForceInstall) {
 						pkg.setID(pkgs.item(c).getAttribute("id"));
 						pkg.setType(pkgs.item(c).getAttribute("type"));
 						pkg.setVersion(pkgs.item(c).getAttribute("version"));
-						
+
 						if (pkgs.item(c).getElementsByTagName("name").length != 0)
 							pkg.setName(pkgs.item(c).getElementsByTagName("name").item(0).textContent);
 
@@ -892,7 +892,7 @@ function IBWUpdaterPackages(aForceInstall) {
 	this.getPackages = function() {
 		return packages;
 	};
-	
+
 	this.getInstalledPackages = function() {
 		return localPackages;
 	};
@@ -1843,6 +1843,25 @@ function IBWUpdaterJSParser(aJSFile) {
 			return str.substr(0, needle.length) == needle;
 	}
 
+	function identLine(count, identWith) {
+		return count == 0 ? "" : Array(count + 1).join(identWith == null ? "\t" : identWith);
+	}
+
+	/**
+	 * Check if next line must ident. Return 0 if within brackets, 1 for a
+	 * single line ident or -1 if not a ident keyowrd.
+	 * 
+	 * @param str
+	 * @returns
+	 */
+	function isIdentStart(str) {
+		return str.indexOf("{") != -1 ? 0 : str.match(/^if\s+\(.*\)|^for\s+\(.*\)|^do\s|^while\s|^else/) ? 1 : -1;
+	}
+
+	function isIdentEnd(str) {
+		return str.indexOf("}") != -1;
+	}
+
 	/**
 	 * Parse content of JavaScript.
 	 */
@@ -1931,6 +1950,7 @@ function IBWUpdaterJSParser(aJSFile) {
 	 */
 	function formatFile() {
 		var data = "";
+		var identWith = "    ";
 
 		// disable sort of functions. WinIBW Bug shortcuts set for position not
 		// name
@@ -1955,10 +1975,21 @@ function IBWUpdaterJSParser(aJSFile) {
 
 			data += "function " + func.name + "(" + (func.params == null ? "" : func.params) + ") {" + lineSeparator;
 			var cLines = func.code.split("\n");
+			var ident = 1;
+			var lastIdent = -1;
 			for ( var i in cLines) {
 				var line = trim(cLines[i]);
 				if (line.length != 0) {
-					data += "\t" + line + lineSeparator;
+					if (isIdentEnd(line) == true)
+						ident--;
+
+					data += identLine(ident, identWith) + line + lineSeparator;
+
+					if (lastIdent == 1)
+						ident--;
+					lastIdent = isIdentStart(line);
+					if (lastIdent != -1)
+						ident++;
 				}
 			}
 			data += "}" + lineSeparator + lineSeparator;
