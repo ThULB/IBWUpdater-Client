@@ -1,5 +1,5 @@
 /**
- * @version 1.0 - $Revision$ (beta)
+ * @version 1.1 - $Revision$ (beta)
  * @author René Adler
  * 
  * This program is free software; you can use it, redistribute it and / or
@@ -181,7 +181,7 @@ function IBWUpdater(aForceInstall) {
 
 	var that = this;
 
-	var version = "1.0";
+	var version = "1.1";
 	var revision = "$Revision$";
 
 	var updaterURL = null;
@@ -1843,21 +1843,39 @@ function IBWUpdaterJSParser(aJSFile) {
 			return str.substr(0, needle.length) == needle;
 	}
 
+	/**
+	 * Ident a line with given ident string or tabulator if
+	 * <code>indetWith</code> null.
+	 * 
+	 * @param {Integer}
+	 *            count
+	 * @param {String}
+	 *            identWith
+	 * @returns
+	 */
 	function identLine(count, identWith) {
 		return count == 0 ? "" : Array(count + 1).join(identWith == null ? "\t" : identWith);
 	}
 
 	/**
-	 * Check if next line must ident. Return 0 if within brackets, 1 for a
+	 * Checks if next line must ident. Return 0 if within brackets, 1 for a
 	 * single line ident or -1 if not a ident keyowrd.
 	 * 
-	 * @param str
-	 * @returns
+	 * @param {String}
+	 *            str
+	 * @returns {Integer}
 	 */
 	function isIdentStart(str) {
 		return str.indexOf("{") != -1 ? 0 : str.match(/^if\s+\(.*\)|^for\s+\(.*\)|^do\s|^while\s|^else/) ? 1 : -1;
 	}
 
+	/**
+	 * Checks if the end of an ident block is reached.
+	 * 
+	 * @param {String}
+	 *            str
+	 * @returns {Boolean}
+	 */
 	function isIdentEnd(str) {
 		return str.indexOf("}") != -1;
 	}
