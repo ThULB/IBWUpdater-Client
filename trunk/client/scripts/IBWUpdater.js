@@ -1,5 +1,5 @@
 /**
- * @version 1.0 - $Revision$ (beta)
+ * @version 1.1 - $Revision$ (beta)
  * @author René Adler
  * 
  * This program is free software; you can use it, redistribute it and / or
