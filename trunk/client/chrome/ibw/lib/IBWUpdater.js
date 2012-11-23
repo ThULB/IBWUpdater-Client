@@ -19,10 +19,6 @@
  */
 
 var application = Components.classes["@oclcpica.nl/kitabapplication;1"].getService(Components.interfaces.IApplication);
-/*
- * https://developer.mozilla.org/en-US/docs/Code_snippets/Miscellaneous
- * http://mb.eschew.org/16
- */
 
 var I18N = {
     _bundle : Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle(

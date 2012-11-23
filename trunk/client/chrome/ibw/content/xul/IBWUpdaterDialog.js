@@ -86,7 +86,7 @@ function doneProcessing() {
 	document.getElementById("lbPackageName").label = I18N.getLocalizedMessage("summary.title");
 	document.getElementById("processingDone").hidden = false;
 	
-	var desc = I18N.getLocalizedMessage("summary.installedTotal" + (packages.length == 1 ? "One" : ""), packages.length);
+	var desc = I18N.getLocalizedMessage("summary.installedTotal" + (packages.length == 1 ? (cCommon == 1 ? "Common" : "User") + "One" : ""), packages.length);
 	
 	if (cCommon != 0 && cUser != 0)
 		desc += I18N.getLocalizedMessage("summary.installedCommon"+ (cCommon == 1 ? "One" : "") + "AndUser" + (cUser == 1 ? "One" : ""), cCommon, cUser);
