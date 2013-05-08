@@ -235,7 +235,7 @@ function IBWUpdater(aForceInstall) {
 			throw new IBWUpdaterException(message);
 		}
 
-		var url_query = updaterURL + "packages.php?uid=" + localUID;
+		var url_query = updaterURL + "packages.php?uid=" + localUID + "&_timestamp=" + (new Date).getTime();
 
 		try {
 			parsePackages(IBWUpdaterHelper.readXML(url_query, "UTF-8", true));
@@ -308,7 +308,8 @@ function IBWUpdater(aForceInstall) {
 		var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
 
 		try {
-			var channel = ioService.newChannel(url + "packages.xml", "UTF-8", null);
+			var timestamp = "?_timestamp=" + (new Date).getTime();
+			var channel = ioService.newChannel(url + "packages.xml" + timestamp, "UTF-8", null);
 			channel.QueryInterface(Components.interfaces.nsIHttpChannel);
 			channel.open();
 
@@ -654,7 +655,8 @@ function IBWUpdaterPackages(aForceInstall) {
 			// https://developer.mozilla.org/en-US/docs/Creating_Sandboxed_HTTP_Connections
 			try {
 				var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-				var uri = ioService.newURI(curPackage.getUrl(), null, null);
+				var timestamp = "?_timestamp=" + (new Date).getTime();
+				var uri = ioService.newURI(curPackage.getUrl() + timestamp, null, null);
 				mChannel = ioService.newChannelFromURI(uri);
 
 				try {
