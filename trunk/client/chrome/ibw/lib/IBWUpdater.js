@@ -309,7 +309,7 @@ function IBWUpdater(aForceInstall) {
 
 		try {
 			var timestamp = "?_timestamp=" + (new Date).getTime();
-			var channel = ioService.newChannel(url + "packages.xml" + timestamp, "UTF-8", null);
+			var channel = ioService.newChannel(url + "packages.php" + timestamp, "UTF-8", null);
 			channel.QueryInterface(Components.interfaces.nsIHttpChannel);
 			channel.open();
 
