@@ -701,7 +701,7 @@ function IBWUpdaterPackages(aForceInstall) {
 						return true;
 					}
 					var curIndex = Number(children[c].substr(1));
-					if (index < curIndex)
+					if (index <= curIndex)
 						index = curIndex + 1;
 				}
 
