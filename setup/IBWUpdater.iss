@@ -6,9 +6,9 @@ Name: Deutsch; MessagesFile: compiler:Languages\German.isl
 [Setup]
 DefaultDirName={pf}\WinIBW30
 UsePreviousAppDir=false
-AppCopyright=René Adler (TU Ilmenau), 2012-
+AppCopyright=René Adler, 2012-
 AppName=IBW Updater
-AppVerName=IBW Updater (1.0)
+AppVerName=IBW Updater (1.1.0)
 DisableFinishedPage=true
 AlwaysShowComponentsList=false
 DisableReadyPage=true
