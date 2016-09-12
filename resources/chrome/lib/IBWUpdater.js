@@ -235,7 +235,7 @@ function IBWUpdater(aForceInstall) {
 			throw new IBWUpdaterException(message);
 		}
 
-		var url_query = updaterURL + "packages.php?uid=" + localUID + "&_timestamp=" + (new Date).getTime();
+		var url_query = updaterURL + "packages?uid=" + localUID + "&_timestamp=" + (new Date).getTime();
 
 		try {
 			parsePackages(IBWUpdaterHelper.readXML(url_query, "UTF-8", true));
@@ -309,7 +309,7 @@ function IBWUpdater(aForceInstall) {
 
 		try {
 			var timestamp = "?_timestamp=" + (new Date).getTime();
-			var channel = ioService.newChannel(url + "packages.php" + timestamp, "UTF-8", null);
+			var channel = ioService.newChannel(url + "packages" + timestamp, "UTF-8", null);
 			channel.QueryInterface(Components.interfaces.nsIHttpChannel);
 			channel.open();
 
