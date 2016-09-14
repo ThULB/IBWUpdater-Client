@@ -1,7 +1,14 @@
 language: node_js
 node_js:
-  - "0.10"
+    - "0.10"
 install:
-  - npm install
+    - npm install
 script:
-  - grunt
+    - grunt
+deploy:
+    provider: releases
+    api_key: ${GH_TOKEN}
+    file: "dist/IBWUpdater-Client.zip"
+    skip_cleanup: true
+    on:
+        tags: true
