@@ -21,10 +21,10 @@
 var application = Components.classes["@oclcpica.nl/kitabapplication;1"].getService(Components.interfaces.IApplication);
 
 var I18N = {
-    _bundle : Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle(
-            "chrome://ibw/locale/IBWUpdater.properties"),
+	_bundle : Components.classes["@mozilla.org/intl/stringbundle;1"].getService(Components.interfaces.nsIStringBundleService).createBundle(
+			"chrome://ibw/locale/IBWUpdater.properties"),
 
-    /**
+	/**
 	 * Returns the localized Message from given String.
 	 * 
 	 * @function {public String} ?
@@ -34,36 +34,36 @@ var I18N = {
 	 *            args
 	 * @return The localized String.
 	 */
-    getLocalizedMessage : function(msg, args) {
-	    try {
-		    if (args) {
-			    args = Array.prototype.slice.call(arguments, 1);
-			    return this._bundle.formatStringFromName(msg, args, args.length);
-		    } else {
-			    return this._bundle.GetStringFromName(msg);
-		    }
-	    } catch (ex) {
-		    return "???" + msg + "???";
-	    }
-    }
+	getLocalizedMessage : function(msg, args) {
+		try {
+			if (args) {
+				args = Array.prototype.slice.call(arguments, 1);
+				return this._bundle.formatStringFromName(msg, args, args.length);
+			} else {
+				return this._bundle.GetStringFromName(msg);
+			}
+		} catch (ex) {
+			return "???" + msg + "???";
+		}
+	}
 };
 
 var IBWUpdaterHelper = {
-    /**
+	/**
 	 * Converts an given Sting to UTF-8.
 	 */
-    toUnicode : function(str) {
-	    try {
-		    var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
-		            .createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
-		    converter.charset = "utf-8";
-		    return converter.ConvertFromUnicode(str);
-	    } catch (ex) {
-		    return str;
-	    }
-    },
+	toUnicode : function(str) {
+		try {
+			var converter = Components.classes["@mozilla.org/intl/scriptableunicodeconverter"]
+					.createInstance(Components.interfaces.nsIScriptableUnicodeConverter);
+			converter.charset = "utf-8";
+			return converter.ConvertFromUnicode(str);
+		} catch (ex) {
+			return str;
+		}
+	},
 
-    /**
+	/**
 	 * Reads an XML from URL or File.
 	 * 
 	 * @param {nsIFile|String}
@@ -73,30 +73,30 @@ var IBWUpdaterHelper = {
 	 * @param {Boolean}
 	 *            aBypassCache - if cache should be bypassed
 	 */
-    readXML : function(aFile, aEncoding, aBypassCache) {
-	    try {
-		    var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
-		    var channel = null;
+	readXML : function(aFile, aEncoding, aBypassCache) {
+		try {
+			var ioService = Components.classes["@mozilla.org/network/io-service;1"].getService(Components.interfaces.nsIIOService);
+			var channel = null;
 
-		    if (typeof (aFile) == "string") {
-			    channel = ioService.newChannel(aFile, aEncoding != undefined ? aEncoding : "UTF-8", null);
-			    if (aBypassCache == true)
-				    channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
-		    } else
-			    channel = ioService.newChannelFromURI(ioService.newFileURI(aFile));
+			if (typeof (aFile) == "string") {
+				channel = ioService.newChannel(aFile, aEncoding != undefined ? aEncoding : "UTF-8", null);
+				if (aBypassCache == true)
+					channel.loadFlags |= Components.interfaces.nsIRequest.LOAD_BYPASS_CACHE;
+			} else
+				channel = ioService.newChannelFromURI(ioService.newFileURI(aFile));
 
-		    if (channel != null) {
-			    var loader = Components.classes["@mozilla.org/content/syncload-dom-service;1"].getService(Components.interfaces.nsISyncLoadDOMService);
-			    var doc = loader.loadDocument(channel, null);
-			    return doc;
-		    } else
-			    return null;
-	    } catch (ex) {
-		    return null;
-	    }
-    },
+			if (channel != null) {
+				var loader = Components.classes["@mozilla.org/content/syncload-dom-service;1"].getService(Components.interfaces.nsISyncLoadDOMService);
+				var doc = loader.loadDocument(channel, null);
+				return doc;
+			} else
+				return null;
+		} catch (ex) {
+			return null;
+		}
+	},
 
-    /**
+	/**
 	 * Reads an local file.
 	 * 
 	 * @param {nsIFile}
@@ -105,27 +105,27 @@ var IBWUpdaterHelper = {
 	 *            aLineSeparator - the line separator that should be used to
 	 *            joins lines.
 	 */
-    readFile : function(aFile, aLineSeparator) {
-	    try {
-		    var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
-		    istream.init(aFile, 0x01, 0444, 0);
-		    istream.QueryInterface(Components.interfaces.nsILineInputStream);
+	readFile : function(aFile, aLineSeparator) {
+		try {
+			var istream = Components.classes["@mozilla.org/network/file-input-stream;1"].createInstance(Components.interfaces.nsIFileInputStream);
+			istream.init(aFile, 0x01, 0444, 0);
+			istream.QueryInterface(Components.interfaces.nsILineInputStream);
 
-		    var line = {}, lines = [], hasmore;
-		    do {
-			    hasmore = istream.readLine(line);
-			    lines.push(line.value);
-		    } while (hasmore);
+			var line = {}, lines = [], hasmore;
+			do {
+				hasmore = istream.readLine(line);
+				lines.push(line.value);
+			} while (hasmore);
 
-		    istream.close();
+			istream.close();
 
-		    return lines.join(aLineSeparator == null ? "\n" : aLineSeparator);
-	    } catch (ex) {
-		    return null;
-	    }
-    },
+			return lines.join(aLineSeparator == null ? "\n" : aLineSeparator);
+		} catch (ex) {
+			return null;
+		}
+	},
 
-    /**
+	/**
 	 * Writes an local file.
 	 * 
 	 * @param {nsIFile}
@@ -135,21 +135,21 @@ var IBWUpdaterHelper = {
 	 * @param {Integer}
 	 *            aFileMode - the file mode for file
 	 */
-    writeFile : function(aFile, aData, aFileMode) {
-	    try {
-		    var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-		    foStream.init(aFile, aFileMode == null || aFileMode == undefined ? 0x2A : aFileMode, 00666, 0);
+	writeFile : function(aFile, aData, aFileMode) {
+		try {
+			var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+			foStream.init(aFile, aFileMode == null || aFileMode == undefined ? 0x2A : aFileMode, 00666, 0);
 
-		    foStream.write(aData, aData.length);
-		    foStream.close();
-	    } catch (ex) {
-		    return false;
-	    }
+			foStream.write(aData, aData.length);
+			foStream.close();
+		} catch (ex) {
+			return false;
+		}
 
-	    return true;
-    },
+		return true;
+	},
 
-    /**
+	/**
 	 * Get the directory for given property.
 	 * 
 	 * @param {String}
@@ -157,16 +157,16 @@ var IBWUpdaterHelper = {
 	 * @param {Object}
 	 *            aInterface - the nsIFile interface
 	 */
-    getSpecialDir : function(aPropName, aInterface) {
-	    try {
-		    var file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get(aPropName,
-		            aInterface != undefined ? aInterface : Components.interfaces.nsILocalFile);
+	getSpecialDir : function(aPropName, aInterface) {
+		try {
+			var file = Components.classes["@mozilla.org/file/directory_service;1"].getService(Components.interfaces.nsIProperties).get(aPropName,
+					aInterface != undefined ? aInterface : Components.interfaces.nsILocalFile);
 
-		    return file;
-	    } catch (ex) {
-		    return null;
-	    }
-    }
+			return file;
+		} catch (ex) {
+			return null;
+		}
+	}
 };
 
 /**
@@ -177,8 +177,8 @@ function IBWUpdater(aForceInstall) {
 
 	var that = this;
 
-	var version = "1.1";
-	var revision = "$Revision$";
+	var version = "@@Version";
+	var revision = "@@Revision";
 
 	var updaterURL = null;
 	var lastChecked = null;
@@ -203,6 +203,9 @@ function IBWUpdater(aForceInstall) {
 		}
 
 		updaterURL = updaterURL == null ? "http://service.bibliothek.tu-ilmenau.de/ibwupd/" : updaterURL;
+		if (updaterURL[updaterURL.length - 1] != "/") {
+			updaterURL += "/";
+		}
 
 		// get local UID for user specified scripts
 		var profDir = IBWUpdaterHelper.getSpecialDir("DeskV", Components.interfaces.nsIFile);
@@ -250,7 +253,7 @@ function IBWUpdater(aForceInstall) {
 	function parsePackages(doc) {
 		if (doc != null) {
 			var pkgs = doc.getElementsByTagName("package");
-			for ( var c = 0; c < pkgs.length; c++) {
+			for (var c = 0; c < pkgs.length; c++) {
 				var pkg = new IBWUpdaterPackage();
 
 				pkg.setID(pkgs.item(c).getAttribute("id"));
@@ -270,7 +273,7 @@ function IBWUpdater(aForceInstall) {
 
 				// type user
 				if (pkgs.item(c).getElementsByTagName("function").length != 0) {
-					for ( var i = 0; i < pkgs.item(c).getElementsByTagName("function").length; i++) {
+					for (var i = 0; i < pkgs.item(c).getElementsByTagName("function").length; i++) {
 						var funcElm = pkgs.item(c).getElementsByTagName("function").item(i);
 						pkg.setFunction(funcElm.getAttribute("name"), funcElm.getAttribute("params"), funcElm.firstChild.data);
 					}
@@ -334,9 +337,7 @@ function IBWUpdater(aForceInstall) {
 	};
 
 	this.getVersion = function() {
-		var build = revision.match(/\d+/);
-
-		return version + "." + build;
+		return version + " (" + revision + ")";
 	};
 
 	/**
@@ -415,10 +416,10 @@ function IBWUpdaterPackages(aForceInstall) {
 
 	// progress data (for callback)
 	var progress = {
-	    name : "",
-	    step : "",
-	    single : 0,
-	    total : 0
+		name : "",
+		step : "",
+		single : 0,
+		total : 0
 	};
 
 	// package data
@@ -458,7 +459,7 @@ function IBWUpdaterPackages(aForceInstall) {
 				var doc = IBWUpdaterHelper.readXML(localPackagesFile);
 				if (doc != null) {
 					var pkgs = doc.getElementsByTagName("package");
-					for ( var c = 0; c < pkgs.length; c++) {
+					for (var c = 0; c < pkgs.length; c++) {
 						var pkg = new IBWUpdaterPackage();
 
 						pkg.setID(pkgs.item(c).getAttribute("id"));
@@ -473,7 +474,7 @@ function IBWUpdaterPackages(aForceInstall) {
 
 						if (pkgs.item(c).getElementsByTagName("fileList").length != 0) {
 							var fileList = new Array();
-							for ( var i = 0; i < pkgs.item(c).getElementsByTagName("file").length; i++) {
+							for (var i = 0; i < pkgs.item(c).getElementsByTagName("file").length; i++) {
 								fileList.push(pkgs.item(c).getElementsByTagName("file").item(i).textContent);
 							}
 							pkg.setFileList(fileList);
@@ -497,7 +498,7 @@ function IBWUpdaterPackages(aForceInstall) {
 				var doc = IBWUpdaterHelper.readXML(userPackagesFile);
 				if (doc != null) {
 					var pkgs = doc.getElementsByTagName("package");
-					for ( var c = 0; c < pkgs.length; c++) {
+					for (var c = 0; c < pkgs.length; c++) {
 						var pkg = new IBWUpdaterPackage();
 
 						pkg.setID(pkgs.item(c).getAttribute("id"));
@@ -512,7 +513,7 @@ function IBWUpdaterPackages(aForceInstall) {
 
 						// type user
 						if (pkgs.item(c).getElementsByTagName("function").length != 0) {
-							for ( var i = 0; i < pkgs.item(c).getElementsByTagName("function").length; i++) {
+							for (var i = 0; i < pkgs.item(c).getElementsByTagName("function").length; i++) {
 								var funcElm = pkgs.item(c).getElementsByTagName("function").item(i);
 								pkg.setFunction(funcElm.getAttribute("name"), funcElm.getAttribute("params"));
 							}
@@ -560,8 +561,8 @@ function IBWUpdaterPackages(aForceInstall) {
 				var funcs = pkg.getFunction();
 				if (funcs.length != 0) {
 					for ( var i in funcs) {
-						usrPackages += "\t\t<function name=\"" + funcs[i].name + "\"" + (funcs[i].params != null ? " params=\"" + funcs[i].params + "\"" : "")
-						        + "/>\n";
+						usrPackages += "\t\t<function name=\"" + funcs[i].name + "\"" + (funcs[i].params != null ? " params=\"" + funcs[i].params + "\"" : "") +
+								"/>\n";
 					}
 				}
 				usrPackages += "\t</package>\n";
@@ -632,7 +633,7 @@ function IBWUpdaterPackages(aForceInstall) {
 	function updateInstalled(aPackage) {
 		if (aPackage instanceof IBWUpdaterPackage) {
 			var counter = localPackages.length;
-			for ( var c = 0; c < counter; c++) {
+			for (var c = 0; c < counter; c++) {
 				if (localPackages[c].getID() == aPackage.getID()) {
 					counter = c;
 					break;
@@ -769,10 +770,10 @@ function IBWUpdaterPackages(aForceInstall) {
 				comment += " */\n";
 
 				jsParser.setFunction({
-				    name : func[c].name,
-				    params : func[c].params,
-				    code : func[c].code,
-				    comment : comment
+					name : func[c].name,
+					params : func[c].params,
+					code : func[c].code,
+					comment : comment
 				});
 
 				that.onPackageProgress(c + 1, func.length);
@@ -962,84 +963,84 @@ function IBWUpdaterPackages(aForceInstall) {
  */
 IBWUpdaterPackages.prototype.StreamListener = function(aClazz, aFile, aCompleteFunc, aProgressFunc) {
 	return ({
-	    mClazz : aClazz,
-	    mFile : aFile,
-	    mCompleteFunc : aCompleteFunc,
-	    mProgressFunc : aProgressFunc,
+		mClazz : aClazz,
+		mFile : aFile,
+		mCompleteFunc : aCompleteFunc,
+		mProgressFunc : aProgressFunc,
 
-	    // nsIStreamListener
-	    onStartRequest : function(aRequest, aContext) {
-		    var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
-		    foStream.init(this.mFile, 0x2A, 00666, 0);
+		// nsIStreamListener
+		onStartRequest : function(aRequest, aContext) {
+			var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"].createInstance(Components.interfaces.nsIFileOutputStream);
+			foStream.init(this.mFile, 0x2A, 00666, 0);
 
-		    this.outputStream = Components.classes["@mozilla.org/binaryoutputstream;1"].createInstance(Components.interfaces.nsIBinaryOutputStream);
-		    this.outputStream.setOutputStream(foStream);
-	    },
+			this.outputStream = Components.classes["@mozilla.org/binaryoutputstream;1"].createInstance(Components.interfaces.nsIBinaryOutputStream);
+			this.outputStream.setOutputStream(foStream);
+		},
 
-	    onDataAvailable : function(aRequest, aContext, aStream, aSourceOffset, aLength) {
-		    if (this.outputStream != null) {
-			    var bistream = Components.classes["@mozilla.org/binaryinputstream;1"].createInstance(Components.interfaces.nsIBinaryInputStream);
-			    bistream.setInputStream(aStream);
-			    var n = 0;
-			    while (n < aLength) {
-				    var ba = bistream.readByteArray(bistream.available());
-				    this.outputStream.writeByteArray(ba, ba.length);
-				    n += ba.length;
-			    }
-		    }
-	    },
+		onDataAvailable : function(aRequest, aContext, aStream, aSourceOffset, aLength) {
+			if (this.outputStream != null) {
+				var bistream = Components.classes["@mozilla.org/binaryinputstream;1"].createInstance(Components.interfaces.nsIBinaryInputStream);
+				bistream.setInputStream(aStream);
+				var n = 0;
+				while (n < aLength) {
+					var ba = bistream.readByteArray(bistream.available());
+					this.outputStream.writeByteArray(ba, ba.length);
+					n += ba.length;
+				}
+			}
+		},
 
-	    onStopRequest : function(aRequest, aContext, aStatus) {
-		    this.outputStream.close();
+		onStopRequest : function(aRequest, aContext, aStatus) {
+			this.outputStream.close();
 
-		    if (Components.isSuccessCode(aStatus)) {
-			    // request was successfull
-			    this.mCompleteFunc(this.mClazz, true);
-		    } else {
-			    // request failed
-			    this.mCompleteFunc(this.mClazz, false);
-			    this.mFile.remove(false);
-		    }
+			if (Components.isSuccessCode(aStatus)) {
+				// request was successfull
+				this.mCompleteFunc(this.mClazz, true);
+			} else {
+				// request failed
+				this.mCompleteFunc(this.mClazz, false);
+				this.mFile.remove(false);
+			}
 
-		    this.mChannel = null;
-	    },
+			this.mChannel = null;
+		},
 
-	    // nsIChannelEventSink
-	    onChannelRedirect : function(aOldChannel, aNewChannel, aFlags) {
-		    // if redirecting, store the new channel
-		    this.mChannel = aNewChannel;
-	    },
+		// nsIChannelEventSink
+		onChannelRedirect : function(aOldChannel, aNewChannel, aFlags) {
+			// if redirecting, store the new channel
+			this.mChannel = aNewChannel;
+		},
 
-	    // nsIInterfaceRequestor
-	    getInterface : function(aIID) {
-		    try {
-			    return this.QueryInterface(aIID);
-		    } catch (e) {
-			    throw Components.results.NS_NOINTERFACE;
-		    }
-	    },
+		// nsIInterfaceRequestor
+		getInterface : function(aIID) {
+			try {
+				return this.QueryInterface(aIID);
+			} catch (e) {
+				throw Components.results.NS_NOINTERFACE;
+			}
+		},
 
-	    // nsIProgressEventSink (not implementing will cause annoying
-	    // exceptions)
-	    onProgress : function(aRequest, aContext, aProgress, aProgressMax) {
-		    this.mProgressFunc(this.mClazz, aProgress, aProgressMax);
-	    },
-	    onStatus : function(aRequest, aContext, aStatus, aStatusArg) {
-	    },
+		// nsIProgressEventSink (not implementing will cause annoying
+		// exceptions)
+		onProgress : function(aRequest, aContext, aProgress, aProgressMax) {
+			this.mProgressFunc(this.mClazz, aProgress, aProgressMax);
+		},
+		onStatus : function(aRequest, aContext, aStatus, aStatusArg) {
+		},
 
-	    // nsIHttpEventSink (not implementing will cause annoying exceptions)
-	    onRedirect : function(aOldChannel, aNewChannel) {
-	    },
+		// nsIHttpEventSink (not implementing will cause annoying exceptions)
+		onRedirect : function(aOldChannel, aNewChannel) {
+		},
 
-	    // we are faking an XPCOM interface, so we need to implement QI
-	    QueryInterface : function(aIID) {
-		    if (aIID.equals(Components.interfaces.nsISupports) || aIID.equals(Components.interfaces.nsIInterfaceRequestor)
-		            || aIID.equals(Components.interfaces.nsIChannelEventSink) || aIID.equals(Components.interfaces.nsIProgressEventSink)
-		            || aIID.equals(Components.interfaces.nsIHttpEventSink) || aIID.equals(Components.interfaces.nsIStreamListener))
-			    return this;
+		// we are faking an XPCOM interface, so we need to implement QI
+		QueryInterface : function(aIID) {
+			if (aIID.equals(Components.interfaces.nsISupports) || aIID.equals(Components.interfaces.nsIInterfaceRequestor) ||
+					aIID.equals(Components.interfaces.nsIChannelEventSink) || aIID.equals(Components.interfaces.nsIProgressEventSink) ||
+					aIID.equals(Components.interfaces.nsIHttpEventSink) || aIID.equals(Components.interfaces.nsIStreamListener))
+				return this;
 
-		    throw Components.results.NS_NOINTERFACE;
-	    }
+			throw Components.results.NS_NOINTERFACE;
+		}
 	});
 };
 
@@ -1228,9 +1229,9 @@ function IBWUpdaterPackage() {
 		}
 
 		func.push({
-		    name : aName,
-		    params : aParams,
-		    code : aCode
+			name : aName,
+			params : aParams,
+			code : aCode
 		});
 	};
 
@@ -1382,7 +1383,7 @@ function IBWUpdaterPackageExtractor(aPackageFile, aPackageTargetDir, aProgressFu
 
 	function getExtractFile(arrPartedPath) {
 		var subdirs = [];
-		for ( var i = 0; i < arrPartedPath.length - 1; i++) {
+		for (var i = 0; i < arrPartedPath.length - 1; i++) {
 			subdirs.push(arrPartedPath[i]);
 		}
 
@@ -1395,7 +1396,7 @@ function IBWUpdaterPackageExtractor(aPackageFile, aPackageTargetDir, aProgressFu
 	function getExtractDir(arrPartedPath) {
 		var dir = getFileWithPath(targetDir);
 
-		for ( var i = 0; i < arrPartedPath.length; i++) {
+		for (var i = 0; i < arrPartedPath.length; i++) {
 			dir.append(arrPartedPath[i]);
 		}
 
@@ -1536,9 +1537,9 @@ function IBWUpdaterPrefParser(aPrefFile) {
 	function parsePref(prefLine) {
 		function pref(aKey, aValue) {
 			return {
-			    key : aKey,
-			    value : IBWUpdaterPrefParser.encodeValue(aValue),
-			    type : typeof (aValue)
+				key : aKey,
+				value : IBWUpdaterPrefParser.encodeValue(aValue),
+				type : typeof (aValue)
 			};
 		}
 
@@ -1643,9 +1644,9 @@ function IBWUpdaterPrefParser(aPrefFile) {
 		}
 
 		prefs.push({
-		    key : aPrefName,
-		    value : IBWUpdaterPrefParser.encodeValue(aPrefValue),
-		    type : typeof (aPrefValue)
+			key : aPrefName,
+			value : IBWUpdaterPrefParser.encodeValue(aPrefValue),
+			type : typeof (aPrefValue)
 		});
 	};
 
@@ -1940,10 +1941,10 @@ function IBWUpdaterJSParser(aJSFile) {
 					} while (brackets != 0);
 
 					jsFunctions.push({
-					    name : found[1],
-					    params : found[2],
-					    code : trimCode(code),
-					    comment : comment
+						name : found[1],
+						params : found[2],
+						code : trimCode(code),
+						comment : comment
 					});
 				}
 			} else {
@@ -2122,6 +2123,6 @@ function IBWUpdaterException(aException) {
  * @return {String} information about the exception
  */
 IBWUpdaterException.prototype.toString = function() {
-	return (this.name != null ? (this.name + " ") : "") + (this.fileName != null ? this.fileName + ":" : "")
-	        + (this.lineNumber != null ? this.lineNumber + " " : "") + this.message + (this.stack != null ? "\r\n" + this.stack : "");
+	return (this.name != null ? (this.name + " ") : "") + (this.fileName != null ? this.fileName + ":" : "") +
+			(this.lineNumber != null ? this.lineNumber + " " : "") + this.message + (this.stack != null ? "\r\n" + this.stack : "");
 };
