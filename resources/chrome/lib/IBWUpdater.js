@@ -440,7 +440,7 @@ function IBWUpdaterPackages(aForceInstall) {
 	 *            aPackage - the package object
 	 */
 	function addToInstalled(aPackage) {
-		if (aPackage instanceof IBWUpdaterPackage) {
+		if (!forceInstall && aPackage instanceof IBWUpdaterPackage) {
 			localPackages.push(aPackage);
 		}
 	}
