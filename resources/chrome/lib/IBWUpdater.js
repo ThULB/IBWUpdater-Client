@@ -1804,6 +1804,10 @@ function IBWUpdaterJSParser(aJSFile) {
 			istream.close();
 
 			parseFile();
+		} else {
+			if (!IBWUpdaterHelper.writeFile(userScriptFile, "")) {
+				throw new IBWUpdaterException(I18N.getLocalizedMessage("packages.error.writeUserScriptFile"));
+			}
 		}
 	}
 
