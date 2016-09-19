@@ -1,10 +1,17 @@
 language: node_js
+sudo: true
+dist: trusty
 node_js:
     - "0.10"
 install:
+    - sudo apt-get install -y wine unrar
     - npm install
 script:
     - grunt
+    - grunt setup
+    
+before_deploy:
+    - grunt setup
 deploy:
     provider: releases
     api_key: ${GH_TOKEN}

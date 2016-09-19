@@ -2,13 +2,13 @@
 LanguageName=German
 LanguageID=$0407
 [Languages]
-Name: Deutsch; MessagesFile: compiler:Languages\German.isl
+Name: Deutsch; MessagesFile: compiler:German.isl
 [Setup]
 DefaultDirName={pf}\WinIBW30
 UsePreviousAppDir=false
 AppCopyright=René Adler, 2012-
 AppName=IBW Updater
-AppVerName=IBW Updater (1.1.0)
+AppVerName=IBW Updater @@Version (@@Revision)
 DisableFinishedPage=true
 AlwaysShowComponentsList=false
 DisableReadyPage=true
@@ -17,6 +17,7 @@ ShowComponentSizes=false
 LanguageDetectionMethod=locale
 DirExistsWarning=no
 OutputDir=.
+OutputBaseFilename=IBWUpdater-Client
 InternalCompressLevel=normal
 ShowLanguageDialog=no
 AppendDefaultDirName=false
@@ -35,21 +36,21 @@ Name: {app}\chrome\ibw\locale\de-de; Flags: uninsneveruninstall
 Name: {app}\chrome\ibw\content\browser; Flags: uninsneveruninstall
 Name: {app}\chrome\ibw\content\browser\pref; Flags: uninsneveruninstall
 [Files]
-Source: ..\scripts\IBWUpdater.js; DestDir: {app}\scripts; AfterInstall: installScript(); Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\lib\IBWUpdater.js; DestDir: {app}\chrome\ibw\lib; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\browser\pref\pref-IBWUpdater.js; DestDir: {app}\chrome\ibw\content\browser\pref; AfterInstall: installPref(); Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\browser\pref\pref-IBWUpdater.xul; DestDir: {app}\chrome\ibw\content\browser\pref; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\browser\pref\pref.css; DestDir: {app}\chrome\ibw\content\browser\pref; Flags: uninsneveruninstall overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\browser\pref\pref.xul; DestDir: {app}\chrome\ibw\content\browser\pref; Flags: uninsneveruninstall overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\locale\de-de\IBWUpdater.dtd; DestDir: {app}\chrome\ibw\locale\de-de; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\locale\de-de\IBWUpdater.properties; DestDir: {app}\chrome\ibw\locale\de-de; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\locale\en-us\IBWUpdater.dtd; DestDir: {app}\chrome\ibw\locale\en-us; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\locale\en-us\IBWUpdater.properties; DestDir: {app}\chrome\ibw\locale\en-us; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\xul\IBWUpdaterDialog.xul; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\xul\IBWUpdaterDialog.js; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\xul\IBWUpdaterSummaryDialog.xul; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\xul\IBWUpdaterSummaryDialog.js; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
-Source: ..\chrome\ibw\content\xul\icons\IBWUpdater.png; DestDir: {app}\chrome\ibw\content\xul\icons; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\scripts\IBWUpdater.js; DestDir: {app}\scripts; AfterInstall: installScript(); Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\lib\IBWUpdater.js; DestDir: {app}\chrome\ibw\lib; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\browser\pref\pref-IBWUpdater.js; DestDir: {app}\chrome\ibw\content\browser\pref; AfterInstall: installPref(); Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\browser\pref\pref-IBWUpdater.xul; DestDir: {app}\chrome\ibw\content\browser\pref; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\browser\pref\pref.css; DestDir: {app}\chrome\ibw\content\browser\pref; Flags: uninsneveruninstall overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\browser\pref\pref.xul; DestDir: {app}\chrome\ibw\content\browser\pref; Flags: uninsneveruninstall overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\locale\de-de\IBWUpdater.dtd; DestDir: {app}\chrome\ibw\locale\de-de; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\locale\de-de\IBWUpdater.properties; DestDir: {app}\chrome\ibw\locale\de-de; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\locale\en-us\IBWUpdater.dtd; DestDir: {app}\chrome\ibw\locale\en-us; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\locale\en-us\IBWUpdater.properties; DestDir: {app}\chrome\ibw\locale\en-us; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\xul\IBWUpdaterDialog.xul; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\xul\IBWUpdaterDialog.js; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\xul\IBWUpdaterSummaryDialog.xul; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\xul\IBWUpdaterSummaryDialog.js; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
+Source: {#sources}\chrome\content\xul\icons\IBWUpdater.png; DestDir: {app}\chrome\ibw\content\xul\icons; Flags: overwritereadonly replacesameversion ignoreversion
 [Code]
 procedure installScript();
 var
