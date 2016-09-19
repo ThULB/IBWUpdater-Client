@@ -4,24 +4,22 @@ node_js:
 sudo: true
 dist: trusty
 
-before_install:
+install:
+    - npm install
+script:
+    - grunt
+    
+before_deploy:
     - sudo dpkg --add-architecture i386
     - sudo apt-get update
     - sudo apt-get install -y wine unrar
-
-install:
-    - npm install
-
-script:
-    - grunt
-    - grunt setup
-    
-before_deploy:
     - grunt setup
 deploy:
     provider: releases
     api_key: ${GH_TOKEN}
-    file: "dist/IBWUpdater-Client.zip"
+    file: 
+        - "dist/IBWUpdater-Client.zip"
+        - "dist/IBWUpdater-Client.exec"
     skip_cleanup: true
     on:
         tags: true
