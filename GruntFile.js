@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg : grunt.file.readJSON('package.json'),
-		banner : '/*!\n' + ' * <%= pkg.name %> v<%= pkg.version %>\n' + ' * Homepage: <%= pkg.homepage %>\n'
+		banner : '/*!\n' + ' * <%= pkg.name %> v<%= pkg.version %> (<%= pkg.revision %>)\n' + ' * Homepage: <%= pkg.homepage %>\n'
 				+ ' * (c) 2013-<%= grunt.template.today("yyyy") %> <%= pkg.author %> and others. All rights reserved.\n'
 				+ ' * Licensed under <%= pkg.license %>\n' + ' */\n',
 		clean : {
@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 					expand : true,
 					flatten : false,
 					cwd : 'build/<%= pkg.name %>',
-					src : [ '**/*.js' ],
+					src : [ '**' ],
 					dest : 'build/<%= pkg.name %>/'
 				} ]
 			}
