@@ -1,4 +1,4 @@
-﻿[LangOptions]
+[LangOptions]
 LanguageName=German
 LanguageID=$0407
 [Languages]
@@ -52,6 +52,19 @@ Source: {#sources}\chrome\content\xul\IBWUpdaterSummaryDialog.xul; DestDir: {app
 Source: {#sources}\chrome\content\xul\IBWUpdaterSummaryDialog.js; DestDir: {app}\chrome\ibw\content\xul; Flags: overwritereadonly replacesameversion ignoreversion
 Source: {#sources}\chrome\content\xul\icons\IBWUpdater.png; DestDir: {app}\chrome\ibw\content\xul\icons; Flags: overwritereadonly replacesameversion ignoreversion
 [Code]
+var
+  Page: TInputQueryWizardPage;
+  UpdaterURL: String;
+
+procedure InitializeWizard();
+begin
+  Page := CreateInputQueryPage(wpWelcome,
+  'Server URL', 'Unter welcher URL ist der Updater Server zu erreichen?',
+  'Bitte geben Sie die Updater Server URL ein und klicken Sie "Weiter" um fortzufahren.');
+  Page.Add('URL:', False);
+  Page.Values[0] := 'http://service.bibliothek.tu-ilmenau.de/ibwupd/';
+end;
+
 procedure installScript();
 var
     fileName: String;
@@ -74,8 +87,9 @@ var
     inputString: String;
     tmp: AnsiString;
 begin
+    UpdaterURL := Page.Values[0];
     fileName := ExpandConstant('{app}\defaults\pref\setup.js');
-    inputString := 'pref("IBWUpdater.url", "http://service.bibliothek.tu-ilmenau.de/ibwupd/");';
+    inputString := 'pref("IBWUpdater.url", "' + UpdaterURL + '");';
 
     if (LoadStringFromFile(fileName, tmp)) then
     begin
@@ -123,12 +137,15 @@ procedure uninstallPref();
 var
     fileName: String;
     inputString: String;
+    input2String: String;
     tmp: AnsiString;
+    tmp2: AnsiString;
 
-    Offset: Integer;
+    Offset, EOffset: Integer;
 begin
     fileName := ExpandConstant('{app}\defaults\pref\setup.js');
-    inputString := 'pref("IBWUpdater.url", "http://service.bibliothek.tu-ilmenau.de/ibwupd/");';
+    inputString := 'pref("IBWUpdater.url"';
+    input2String := ');';
 
     if (LoadStringFromFile(fileName, tmp)) then
     begin
@@ -136,6 +153,8 @@ begin
         begin
             Offset := Pos(inputString, tmp);
             Delete(tmp, Offset, Length(inputString));
+            EOffset := Pos(input2String, tmp);
+            Delete(tmp, 1, EOffset + Length(input2String));
             tmp := TrimRight(tmp);
             SaveStringToFile(fileName, tmp, false);
         end;
