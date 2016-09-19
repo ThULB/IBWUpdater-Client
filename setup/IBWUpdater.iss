@@ -139,7 +139,6 @@ var
     inputString: String;
     input2String: String;
     tmp: AnsiString;
-    tmp2: AnsiString;
 
     Offset, EOffset: Integer;
 begin
