@@ -6,7 +6,8 @@ dist: trusty
 
 before_install:
     - sudo dpkg --add-architecture i386
-    - sudo apt-get install -y wine wine1.6 unrar
+    - sudo apt-get update
+    - sudo apt-get install -y wine unrar
 
 install:
     - npm install
