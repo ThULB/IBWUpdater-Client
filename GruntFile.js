@@ -108,7 +108,7 @@ module.exports = function(grunt) {
 				cwd : 'build/setup/innosetup/'
 			},
 			installer : {
-				command : 'wine ./innosetup/ISCC.exe IBWUpdater.iss /Dsources=..\\\\<%= pkg.name %>\\\\',
+				command : 'wine ./innosetup/ISCC.exe IBWUpdater.iss /Dsources=..\\\\<%= pkg.name %>\\\\ /O..\\\\..\\\\dist\\\\',
 				cwd : 'build/setup/'
 			}
 		}
@@ -125,8 +125,8 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-git-revision');
 	grunt.loadNpmTasks('grunt-replace');
 
-	grunt.registerTask('build', [ 'revision', 'copy', 'uglify', 'replace' ]);
+	grunt.registerTask('build', [ 'revision', 'copy', 'uglify', 'replace', 'compress' ]);
 	grunt.registerTask('setup', [ 'clean', 'build', 'curl', 'exec' ]);
 
-	grunt.registerTask('default', [ 'clean', 'build', 'compress' ]);
+	grunt.registerTask('default', [ 'clean', 'build' ]);
 };
