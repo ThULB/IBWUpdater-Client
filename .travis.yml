@@ -19,7 +19,7 @@ deploy:
     api_key: ${GH_TOKEN}
     file: 
         - "dist/IBWUpdater-Client.zip"
-        - "dist/IBWUpdater-Client.exec"
+        - "dist/IBWUpdater-Client.exe"
     skip_cleanup: true
     on:
         tags: true
