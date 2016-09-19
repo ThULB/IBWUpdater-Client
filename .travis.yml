@@ -4,7 +4,7 @@ dist: trusty
 node_js:
     - "0.10"
 install:
-    - sudo apt-get install -y wine unrar
+    - sudo apt-get install -y unrar
     - npm install
 script:
     - grunt
