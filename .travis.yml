@@ -1,11 +1,16 @@
 language: node_js
-sudo: true
-dist: trusty
 node_js:
     - "0.10"
+sudo: true
+dist: trusty
+
+before_install:
+    - sudo apt-get -qq update
+    - sudo apt-get install -yq wine unrar
+
 install:
-    - sudo apt-get install -y unrar
     - npm install
+
 script:
     - grunt
     - grunt setup
