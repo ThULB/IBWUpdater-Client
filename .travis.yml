@@ -5,8 +5,8 @@ sudo: true
 dist: trusty
 
 before_install:
-    - sudo apt-get -qq update
-    - sudo apt-get install -yq wine unrar
+    - sudo dpkg --add-architecture i386
+    - sudo apt-get install -y wine wine1.6 unrar
 
 install:
     - npm install
