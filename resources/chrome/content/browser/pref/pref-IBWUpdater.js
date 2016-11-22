@@ -114,6 +114,7 @@ function getUpdateSourceLocation() {
 
 function setUpdateSourceLocation(value) {
 	gPrefWindow.pref.SetUnicharPref("IBWUpdater.url", value);
+	updaterData.dataEls.uRLUpdateSourceLocation = value;
 }
 
 function showInstalled() {
