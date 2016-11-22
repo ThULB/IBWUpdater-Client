@@ -62,7 +62,7 @@ begin
   'Server URL', 'Unter welcher URL ist der Updater Server zu erreichen?',
   'Bitte geben Sie die Updater Server URL ein und klicken Sie "Weiter" um fortzufahren.');
   Page.Add('URL:', False);
-  Page.Values[0] := 'http://service.bibliothek.tu-ilmenau.de/ibwupd/';
+  Page.Values[0] := 'http://ibwupdate.ulb.uni-jena.de/';
 end;
 
 procedure installScript();

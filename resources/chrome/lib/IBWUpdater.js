@@ -1,5 +1,6 @@
 /**
- * @version @@Version (@@Revision)
+ * @version
+ * @@Version (@@Revision)
  * @author René Adler
  * 
  * This program is free software; you can use it, redistribute it and / or
@@ -202,7 +203,7 @@ function IBWUpdater(aForceInstall) {
 			// do nothing
 		}
 
-		updaterURL = updaterURL == null ? "http://service.bibliothek.tu-ilmenau.de/ibwupd/" : updaterURL;
+		updaterURL = updaterURL == null ? "http://ibwupdate.ulb.uni-jena.de/" : updaterURL;
 		if (updaterURL[updaterURL.length - 1] != "/") {
 			updaterURL += "/";
 		}
