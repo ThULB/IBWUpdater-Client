@@ -43,11 +43,9 @@ module.exports = function(grunt) {
 				dest : 'build/setup'
 			}
 		},
-		revision : {
+		gitinfo : {
 			options : {
-				property : 'pkg.revision',
-				ref : 'HEAD',
-				short : true
+				cwd : "./"
 			}
 		},
 		replace : {
@@ -58,7 +56,7 @@ module.exports = function(grunt) {
 						replacement : '<%= pkg.version %>'
 					}, {
 						match : 'Revision',
-						replacement : '<%= pkg.revision %>'
+						replacement : '<%= gitinfo.local.branch.current.shortSHA %>'
 					} ]
 				},
 				files : [ {
@@ -122,10 +120,10 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-exec');
-	grunt.loadNpmTasks('grunt-git-revision');
+	grunt.loadNpmTasks("grunt-gitinfo");
 	grunt.loadNpmTasks('grunt-replace');
 
-	grunt.registerTask('build', [ 'revision', 'copy', 'uglify', 'replace', 'compress' ]);
+	grunt.registerTask('build', [ 'gitinfo', 'copy', 'uglify', 'replace', 'compress' ]);
 	grunt.registerTask('setup', [ 'clean', 'build', 'curl', 'exec' ]);
 
 	grunt.registerTask('default', [ 'clean', 'build' ]);
