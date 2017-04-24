@@ -102,7 +102,7 @@ module.exports = function(grunt) {
 				cwd : 'build/setup/innosetup/'
 			},
 			innosetup : {
-				command : 'wine "./innounp.exe" -e "is-unicode.exe"',
+				command : 'wine ./innounp.exe -e ./is-unicode.exe',
 				cwd : 'build/setup/innosetup/'
 			},
 			installer : {
