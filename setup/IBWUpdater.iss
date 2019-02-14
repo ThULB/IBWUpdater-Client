@@ -4,7 +4,7 @@ LanguageID=$0407
 [Languages]
 Name: Deutsch; MessagesFile: compiler:German.isl
 [Setup]
-DefaultDirName={pf}\WinIBW30
+DefaultDirName={pf}\WinIBW30_K10plus
 UsePreviousAppDir=false
 AppCopyright=René Adler, 2012-
 AppName=IBW Updater
